@@ -20,12 +20,12 @@ class ModeViewController: UIViewController {
 
     @IBAction func soloModeClick(_ sender: Any) {
         print("su")
-        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "difficulty") as? DifficultyViewController{
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     @IBAction func modeClick(_ sender: Any) {
-        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "difficulty") as? DifficultyViewController{
             self.navigationController?.pushViewController(VC, animated: true)
         }
 

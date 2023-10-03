@@ -19,7 +19,7 @@ class DifficultyViewController: UIViewController {
     
 
     @IBAction func diffClick(_ sender: Any) {
-        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController{
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }
