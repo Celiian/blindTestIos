@@ -106,21 +106,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecb-if-Mac">
-                                <rect key="frame" x="139" y="713" width="114" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="placeholder"/>
-                                <connections>
-                                    <action selector="placeholderClick:" destination="ID8-S3-hzR" eventType="touchUpInside" id="3s1-V1-aQa"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2LL-Z5-LVi">
-                                <rect key="frame" x="20.333333333333343" y="169" width="352" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="E9x-GA-BLt">
-                                <rect key="frame" x="17" y="226" width="357" height="471"/>
+                                <rect key="frame" x="17" y="238" width="357" height="459"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="9RM-k1-IsA">
@@ -138,27 +125,30 @@
                                     <outlet property="delegate" destination="ID8-S3-hzR" id="Men-ac-MWd"/>
                                 </connections>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Egd-zJ-fOQ">
+                                <rect key="frame" x="30" y="164" width="332" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ID8-S3-hzR" id="fQD-WE-DdA"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HzD-d4-ooc"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ecb-if-Mac" firstAttribute="top" secondItem="E9x-GA-BLt" secondAttribute="bottom" constant="16" id="7Ul-8b-mds"/>
-                            <constraint firstItem="2LL-Z5-LVi" firstAttribute="top" secondItem="HzD-d4-ooc" secondAttribute="top" constant="109.9999999999975" id="F0X-ph-Yyd"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="bottom" secondItem="ecb-if-Mac" secondAttribute="bottom" constant="70" id="Lcg-TE-Nwx"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="bottom" secondItem="E9x-GA-BLt" secondAttribute="bottom" constant="121" id="5pJ-X2-5Ht"/>
+                            <constraint firstItem="Egd-zJ-fOQ" firstAttribute="top" secondItem="HzD-d4-ooc" secondAttribute="top" constant="105" id="9Ub-uS-ZW5"/>
                             <constraint firstItem="E9x-GA-BLt" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="16.920117490440248" id="NzC-H6-sPO"/>
+                            <constraint firstItem="Egd-zJ-fOQ" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="30" id="OPF-pn-Fxe"/>
+                            <constraint firstItem="E9x-GA-BLt" firstAttribute="top" secondItem="Egd-zJ-fOQ" secondAttribute="bottom" constant="18" id="TpF-r5-ill"/>
                             <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="E9x-GA-BLt" secondAttribute="trailing" constant="19.079882509738695" id="XzL-5G-vZv"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="2LL-Z5-LVi" secondAttribute="trailing" constant="20.774495829580133" id="ZBS-TF-h6R"/>
-                            <constraint firstItem="E9x-GA-BLt" firstAttribute="top" secondItem="2LL-Z5-LVi" secondAttribute="bottom" constant="23" id="kDe-u3-vGn"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="ecb-if-Mac" secondAttribute="trailing" constant="140" id="kOV-PI-Esb"/>
-                            <constraint firstItem="ecb-if-Mac" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="139" id="oMh-RB-UdD"/>
-                            <constraint firstItem="2LL-Z5-LVi" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="20.225504170596196" id="rA4-GO-AQ1"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="Egd-zJ-fOQ" secondAttribute="trailing" constant="31" id="qa9-ku-4Jq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VUh-VH-77D"/>
                     <connections>
                         <outlet property="artistTableView" destination="E9x-GA-BLt" id="vEs-Ex-RnB"/>
-                        <outlet property="placeholderNavButton" destination="ecb-if-Mac" id="RsD-Kv-5nM"/>
-                        <outlet property="searchBarTextField" destination="2LL-Z5-LVi" id="moi-IQ-PpL"/>
+                        <outlet property="searchBar" destination="Egd-zJ-fOQ" id="dPf-fz-jBy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d4L-d5-div" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -280,6 +270,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="cl9-tg-TeN">
+                                <rect key="frame" x="121" y="469" width="150" height="4"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="contentStretch" x="1" y="0.0" width="1" height="0.45000000000000001"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KSi-Zc-mKZ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
