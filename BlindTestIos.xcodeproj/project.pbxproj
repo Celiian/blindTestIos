@@ -18,6 +18,7 @@
 		CF445C932ACC0A3200F4AF9F /* DifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */; };
 		CF445C962ACC0A9400F4AF9F /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */; };
 		CF445C982ACC0AA500F4AF9F /* RulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */; };
+		CFD42FCA2ACC3B87002F21B8 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +33,9 @@
 		CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeViewController.swift; sourceTree = "<group>"; };
 		CF445C902ACC0A1000F4AF9F /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyViewController.swift; sourceTree = "<group>"; };
-		CF445C942ACC0A5100F4AF9F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesViewController.swift; sourceTree = "<group>"; };
+		CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,13 +68,13 @@
 		B041A5972ACC04780051AABA /* BlindTestIos */ = {
 			isa = PBXGroup;
 			children = (
-				CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */,
 				B041A5982ACC04780051AABA /* AppDelegate.swift */,
 				B041A59A2ACC04780051AABA /* SceneDelegate.swift */,
 				B041A59C2ACC04780051AABA /* ViewController.swift */,
 				CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */,
 				CF445C902ACC0A1000F4AF9F /* CategoryViewController.swift */,
-				CF445C942ACC0A5100F4AF9F /* GameViewController.swift */,
+				CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */,
+				CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */,
 				CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */,
 				CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */,
 				B041A59E2ACC04780051AABA /* Main.storyboard */,
@@ -159,6 +160,7 @@
 				CF445C912ACC0A1000F4AF9F /* CategoryViewController.swift in Sources */,
 				CF445C932ACC0A3200F4AF9F /* DifficultyViewController.swift in Sources */,
 				B041A59D2ACC04780051AABA /* ViewController.swift in Sources */,
+				CFD42FCA2ACC3B87002F21B8 /* GameViewController.swift in Sources */,
 				B041A5992ACC04780051AABA /* AppDelegate.swift in Sources */,
 				B041A59B2ACC04780051AABA /* SceneDelegate.swift in Sources */,
 				CF445C982ACC0AA500F4AF9F /* RulesViewController.swift in Sources */,

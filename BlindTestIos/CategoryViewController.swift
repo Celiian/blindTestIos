@@ -9,13 +9,21 @@ import UIKit
 
 class CategoryViewController: UIViewController {
 
+    @IBOutlet weak var placeholderNavButton: UIButton!
+    @IBOutlet weak var categoryLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func placeholderClick(_ sender: Any) {
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "difficulty") as? DifficultyViewController{
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
 
+    }
+    
     /*
     // MARK: - Navigation
 

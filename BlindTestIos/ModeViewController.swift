@@ -9,6 +9,8 @@ import UIKit
 
 class ModeViewController: UIViewController {
 
+    @IBOutlet weak var multiButton: UIButton!
+    @IBOutlet weak var soloButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,6 +18,18 @@ class ModeViewController: UIViewController {
     }
     
 
+    @IBAction func soloModeClick(_ sender: Any) {
+        print("su")
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
+    @IBAction func modeClick(_ sender: Any) {
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+
+    }
     /*
     // MARK: - Navigation
 
