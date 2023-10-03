@@ -107,41 +107,63 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecb-if-Mac">
-                                <rect key="frame" x="140" y="206" width="114" height="35"/>
+                                <rect key="frame" x="139" y="713" width="114" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="placeholder"/>
                                 <connections>
                                     <action selector="placeholderClick:" destination="ID8-S3-hzR" eventType="touchUpInside" id="3s1-V1-aQa"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Catégorie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQF-nu-AlZ">
-                                <rect key="frame" x="121" y="114" width="151" height="43"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2LL-Z5-LVi">
+                                <rect key="frame" x="20.333333333333343" y="169" width="352" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="E9x-GA-BLt">
+                                <rect key="frame" x="17" y="226" width="357" height="471"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="9RM-k1-IsA">
+                                        <rect key="frame" x="0.0" y="50" width="357" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9RM-k1-IsA" id="k1E-0z-qxy">
+                                            <rect key="frame" x="0.0" y="0.0" width="357" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ID8-S3-hzR" id="O5H-a8-S8D"/>
+                                    <outlet property="delegate" destination="ID8-S3-hzR" id="Men-ac-MWd"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="HzD-d4-ooc"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ecb-if-Mac" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="140" id="BiQ-KP-SrM"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="bottom" secondItem="fQF-nu-AlZ" secondAttribute="bottom" constant="690" id="Hp4-zd-rTi"/>
-                            <constraint firstItem="fQF-nu-AlZ" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="121" id="ICI-ol-VA9"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="bottom" secondItem="ecb-if-Mac" secondAttribute="bottom" constant="577" id="QeH-4B-eZb"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="ecb-if-Mac" secondAttribute="trailing" constant="139" id="Sd4-IB-vca"/>
-                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="fQF-nu-AlZ" secondAttribute="trailing" constant="121" id="fU9-ES-ctR"/>
-                            <constraint firstItem="fQF-nu-AlZ" firstAttribute="top" secondItem="HzD-d4-ooc" secondAttribute="top" constant="26" id="fgd-Cq-h6n"/>
+                            <constraint firstItem="ecb-if-Mac" firstAttribute="top" secondItem="E9x-GA-BLt" secondAttribute="bottom" constant="16" id="7Ul-8b-mds"/>
+                            <constraint firstItem="2LL-Z5-LVi" firstAttribute="top" secondItem="HzD-d4-ooc" secondAttribute="top" constant="109.9999999999975" id="F0X-ph-Yyd"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="bottom" secondItem="ecb-if-Mac" secondAttribute="bottom" constant="70" id="Lcg-TE-Nwx"/>
+                            <constraint firstItem="E9x-GA-BLt" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="16.920117490440248" id="NzC-H6-sPO"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="E9x-GA-BLt" secondAttribute="trailing" constant="19.079882509738695" id="XzL-5G-vZv"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="2LL-Z5-LVi" secondAttribute="trailing" constant="20.774495829580133" id="ZBS-TF-h6R"/>
+                            <constraint firstItem="E9x-GA-BLt" firstAttribute="top" secondItem="2LL-Z5-LVi" secondAttribute="bottom" constant="23" id="kDe-u3-vGn"/>
+                            <constraint firstItem="HzD-d4-ooc" firstAttribute="trailing" secondItem="ecb-if-Mac" secondAttribute="trailing" constant="140" id="kOV-PI-Esb"/>
+                            <constraint firstItem="ecb-if-Mac" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="139" id="oMh-RB-UdD"/>
+                            <constraint firstItem="2LL-Z5-LVi" firstAttribute="leading" secondItem="HzD-d4-ooc" secondAttribute="leading" constant="20.225504170596196" id="rA4-GO-AQ1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VUh-VH-77D"/>
                     <connections>
-                        <outlet property="categoryLabel" destination="fQF-nu-AlZ" id="1ok-P4-NZY"/>
+                        <outlet property="artistTableView" destination="E9x-GA-BLt" id="vEs-Ex-RnB"/>
                         <outlet property="placeholderNavButton" destination="ecb-if-Mac" id="RsD-Kv-5nM"/>
+                        <outlet property="searchBarTextField" destination="2LL-Z5-LVi" id="moi-IQ-PpL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d4L-d5-div" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4323" y="4"/>
+            <point key="canvasLocation" x="4321.3740458015263" y="3.5211267605633805"/>
         </scene>
         <!--Difficulty View Controller-->
         <scene sceneID="8FX-Dq-6IU">
