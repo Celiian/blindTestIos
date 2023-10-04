@@ -8,6 +8,8 @@
 import UIKit
 
 class PlayerViewController: UIViewController {
+    
+    var playerData : [[String : Int]] = []
 
     @IBOutlet weak var embedPlayerListUiView: UIView!
     @IBOutlet weak var playerNameTextField: UITextField!
@@ -23,11 +25,18 @@ class PlayerViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier, identifier == "SendPlayerDataSegue" {
-            if let embedController
+            if let embedControllerVC = segue.destination as? PlayerListTableViewController{
+                self.embedController = embedControllerVC
+            }
         }
     }
     
 
+    @IBAction func addPlayer(_ sender: Any) {
+        playerData.append([self.playerNameTextField.text! : 0])
+        self.embedController!.setData(data: playerData)
+        self.playerNameTextField.text = ""
+    }
     /*
     // MARK: - Navigation
 

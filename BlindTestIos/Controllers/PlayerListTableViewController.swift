@@ -9,6 +9,7 @@ import UIKit
 
 class PlayerListTableViewController: UITableViewController {
     
+    @IBOutlet var playerTableView: UITableView!
     var playerData: [[String:Int]] = []
 
     override func viewDidLoad() {
@@ -30,41 +31,29 @@ class PlayerListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var rows = self.playerData.count
-        if rows == 0{
-            rows = 1
-        }
 
         return rows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "nique"
-        // Configure the cell with data from yourDataArray
-//        if let artistName = playerData[indexPath.row].key{
-//            cell.textLabel?.text = artistName
-//            
-//        } else {
-//            cell.textLabel?.text = "Unknown"
-//        }
+//        cell.textLabel?.text = "nique"
+        if let artistName = playerData[indexPath.row].keys.first{
+            var score = playerData[indexPath.row].values.first
+            cell.textLabel?.text = "\(artistName)  \(score ?? 0)"
+        } else {
+            cell.textLabel?.text = "Unknown"
+        }
        
         return cell
     }
     
-    func setData(name: String){
-        playerData.append([name : 0])
+    func setData(data: [[String : Int]]){
+        playerData = data
+        playerTableView.reloadData()
         print(playerData)
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
 
     /*
     // Override to support conditional editing of the table view.

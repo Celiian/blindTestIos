@@ -121,6 +121,9 @@
                                 <rect key="frame" x="159" y="223" width="75" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="addPlayer:" destination="aC4-IM-kAQ" eventType="touchUpInside" id="VFc-wj-X5D"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H1z-CS-QB1"/>
@@ -172,6 +175,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="8xi-dv-6Bu"/>
+                    <connections>
+                        <outlet property="playerTableView" destination="Kqn-wR-8st" id="7fG-3o-gaZ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wsy-Ya-rrt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
