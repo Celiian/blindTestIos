@@ -22,7 +22,7 @@ class MultiDifficultyViewController: UIViewController {
     
 
     @IBAction func navClick(_ sender: Any) {
-        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiCategory") as? DifficultyViewController{
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiCategory") as? MultiCategoryViewController{
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }

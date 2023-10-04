@@ -11,6 +11,7 @@ class PlayerViewController: UIViewController {
     
     var playerData : [[String : Int]] = []
 
+    @IBOutlet weak var continueButton: UIButton!
     @IBOutlet weak var embedPlayerListUiView: UIView!
     @IBOutlet weak var playerNameTextField: UITextField!
     @IBOutlet weak var addPlayerButton: UIButton!
@@ -31,7 +32,12 @@ class PlayerViewController: UIViewController {
         }
     }
     
-
+    @IBAction func continueClick(_ sender: Any) {
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiDifficulty") as? MultiDifficultyViewController{
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
+    
     @IBAction func addPlayer(_ sender: Any) {
         playerData.append([self.playerNameTextField.text! : 0])
         self.embedController!.setData(data: playerData)
