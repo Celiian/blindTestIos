@@ -233,9 +233,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zY2-zw-fbC" userLabel="Play">
-                                <rect key="frame" x="156" y="486" width="75" height="35"/>
+                                <rect key="frame" x="76" y="486" width="277.66666666666669" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="ButtonButtonButtonButtonButton"/>
                                 <connections>
                                     <action selector="playSound:" destination="X66-XH-uiq" eventType="touchUpInside" id="8Sl-r7-a4M"/>
                                 </connections>
@@ -256,17 +256,17 @@
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="bottom" secondItem="jyd-5L-as5" secondAttribute="bottom" constant="386" id="LBR-qt-mb3"/>
                             <constraint firstItem="jyd-5L-as5" firstAttribute="top" secondItem="tRe-Uh-QCL" secondAttribute="bottom" constant="8" symbolic="YES" id="N3e-LZ-Xid"/>
                             <constraint firstItem="Loc-1Z-pQP" firstAttribute="top" secondItem="fDo-uE-I8h" secondAttribute="top" constant="47.666666666666671" id="R9c-Lo-9MN"/>
-                            <constraint firstItem="zY2-zw-fbC" firstAttribute="leading" secondItem="fDo-uE-I8h" secondAttribute="leading" constant="156" id="Rp1-bv-uWK"/>
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="tRe-Uh-QCL" secondAttribute="trailing" constant="68" id="Tez-7b-sch"/>
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="cMW-1o-NtH" secondAttribute="trailing" constant="142" id="W9y-hD-Hat"/>
                             <constraint firstItem="SUI-mU-w8B" firstAttribute="top" secondItem="fDo-uE-I8h" secondAttribute="top" constant="30" id="WrC-io-Js0"/>
+                            <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="zY2-zw-fbC" secondAttribute="trailing" constant="39.333333333333314" id="ZzB-3c-wUi"/>
+                            <constraint firstItem="zY2-zw-fbC" firstAttribute="leading" secondItem="fDo-uE-I8h" secondAttribute="leading" constant="76" id="eXi-Ex-A4s"/>
                             <constraint firstItem="tRe-Uh-QCL" firstAttribute="top" secondItem="fDo-uE-I8h" secondAttribute="top" constant="81" id="gXa-lI-A3h"/>
                             <constraint firstItem="jyd-5L-as5" firstAttribute="leading" secondItem="fDo-uE-I8h" secondAttribute="leading" constant="76" id="gfD-ml-b3j"/>
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="SUI-mU-w8B" secondAttribute="trailing" constant="153" id="kIz-mU-scJ"/>
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="bottom" secondItem="SUI-mU-w8B" secondAttribute="bottom" constant="686" id="lo9-Fa-Sbu"/>
                             <constraint firstItem="SUI-mU-w8B" firstAttribute="leading" secondItem="fDo-uE-I8h" secondAttribute="leading" constant="147" id="nZe-sI-IjY"/>
                             <constraint firstItem="jyd-5L-as5" firstAttribute="top" secondItem="fDo-uE-I8h" secondAttribute="top" constant="245" id="syC-H8-w3X"/>
-                            <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="zY2-zw-fbC" secondAttribute="trailing" constant="162" id="taB-78-oqA"/>
                             <constraint firstItem="Loc-1Z-pQP" firstAttribute="leading" secondItem="SUI-mU-w8B" secondAttribute="trailing" constant="55" id="tqF-Mt-Qo6"/>
                             <constraint firstItem="fDo-uE-I8h" firstAttribute="trailing" secondItem="Loc-1Z-pQP" secondAttribute="trailing" constant="56" id="zEv-Jo-gtB"/>
                         </constraints>
