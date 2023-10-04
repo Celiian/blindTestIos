@@ -18,22 +18,21 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var trackNumber: UILabel!
     @IBOutlet weak var albumCover: UIImageView!
-    @IBOutlet weak var progress: UIProgressView!
     @IBOutlet weak var playButton: UIButton!
-    
     
     var player: AVPlayer?
     var timer: Timer?
+    var index: Int = 0
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.progress.isHidden = true
         self.music_name.isHidden = true
         self.albumCover.isHidden = true
         self.trackNumber.isHidden = true
-
+        self.playButton.isHidden = true
+        self.playButton.titleLabel?.text = "Commencer"
         getSongs()
     }
 
@@ -70,6 +69,11 @@ class GameViewController: UIViewController {
 
                             
                             self.previews_url = previewDictionary
+                            DispatchQueue.main.async {
+                                self.playButton.isHidden = false
+                                self.spinner.stopAnimating()
+                                self.spinner.isHidden = true
+                            }
                         }
                         
                     } catch {
@@ -82,76 +86,102 @@ class GameViewController: UIViewController {
         }
         
         
+       
+
+    }
+    
+    @IBAction func playSound(_ sender: Any) {
         let audioDuration = 10.0
         let timerDuration = 15.0
-        var index = 0
+        self.playButton.isHidden = true
+        
         var progressTimer: Timer?
-
-        timer = Timer.scheduledTimer(withTimeInterval: timerDuration, repeats: true) { [weak self] _ in
-            self?.player?.pause()
-            if index < (self?.previews_url.count)! {
-                if let urlString = self?.previews_url[index]["url"], let audioURL = URL(string: urlString),
-                   let songName = self?.previews_url[index]["name"],
-                   let coverUrl = self?.previews_url[index]["coverURL"]{
-                    self?.player = AVPlayer(url: audioURL)
-                    self?.spinner.stopAnimating()
-                    self?.spinner.isHidden = true
-                    self?.progress.isHidden = false
-                    self?.albumCover.isHidden = true
-                    
-                    if let url = URL(string: coverUrl) {
-                        URLSession.shared.dataTask(with: url) { (data, response, error) in
-                            if let data = data {
-                                DispatchQueue.main.async {
-                                    self?.albumCover.image = UIImage(data: data)
-                                }
-                            }
-                        }.resume()
-                    }
-
-                    self?.trackNumber.text = "\(index + 1) / \(self?.previews_url.count ?? 0)"
-                    self?.trackNumber.isHidden = false
-                    self?.music_name.text = ""
-                    self?.music_name.isHidden = true
-                    self?.player?.play()
                 
-                    // Pause audio after the desired audio duration
-                    DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
-                        self?.player?.pause()
+        if let urlString = self.previews_url[self.index]["url"], let audioURL = URL(string: urlString),
+           let songName = self.previews_url[self.index]["name"],
+           let coverUrl = self.previews_url[self.index]["coverURL"]{
+            self.player = AVPlayer(url: audioURL)
+            self.albumCover.isHidden = true
+            
+            if let url = URL(string: coverUrl) {
+                URLSession.shared.dataTask(with: url) { (data, response, error) in
+                    if let data = data {
+                        DispatchQueue.main.async {
+                            self.albumCover.image = UIImage(data: data)
+                        }
                     }
-                    
-                    // Update progress bar every second
-                    var seconds = 0.0
-                    self?.progress.setProgress(0, animated: true)
-                    progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-                        guard let self = self else { return }
-                        let progressValue = Float(seconds) / Float(audioDuration)
-                        self.progress.setProgress(progressValue, animated: true)
-                        seconds += 0.1
-                        
-                         
-                        if Int(seconds) > Int(audioDuration) {
-                            self.music_name.isHidden = false
-                            self.music_name.text = songName
-                            self.albumCover.isHidden = false
-                            progressTimer?.invalidate()
-                           
+                }.resume()
+            }
+            
+            
+            
+            self.trackNumber.text = "\(index + 1) / \(self.previews_url.count )"
+            self.trackNumber.isHidden = false
+            self.music_name.text = ""
+            self.music_name.isHidden = true
+            self.player?.play()
+            
+            animateAndDisappearContainer(duration: audioDuration, disappearanceDuration: 1.0) {
+                self.player?.pause()
+                self.index += 1
+                self.music_name.isHidden = false
+                self.music_name.text = songName
+                self.albumCover.isHidden = false
+                self.playButton.setTitle("Continuer", for: .normal)
+                self.playButton.isHidden = false
+                progressTimer?.invalidate()
+            }
+
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
+                self.player?.pause()
+            }
+            
+            
+            
+        }
+        
+    }
+    
+    @objc func animateAndDisappearContainer(duration: TimeInterval, disappearanceDuration: TimeInterval, completionHandler: @escaping () -> Void) {
+            let screenWidth = UIScreen.main.bounds.size.width
+            let screenHeight = UIScreen.main.bounds.size.height
+            let containerWidth: CGFloat = screenWidth * 0.8
+            let containerHeight: CGFloat = screenHeight * 0.05
+            let containerX = (screenWidth - containerWidth) / 2
+            let containerY = screenHeight * 0.75 - containerHeight / 2
+
+            let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
+            containerView.backgroundColor = UIColor.white
+            containerView.layer.cornerRadius = containerHeight / 2
+            containerView.layer.borderWidth = 1.0
+            containerView.layer.borderColor = UIColor.black.cgColor
+
+            let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
+            fillView.backgroundColor = UIColor.green
+            fillView.layer.cornerRadius = containerHeight / 2
+            containerView.addSubview(fillView)
+
+            self.view.addSubview(containerView)
+
+            UIView.animate(withDuration: duration, animations: {
+                fillView.frame.size.width = containerView.frame.width
+            }) { (completed) in
+                if completed {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + disappearanceDuration) {
+                        UIView.animate(withDuration: disappearanceDuration, animations: {
+                            containerView.alpha = 0.0
+                        }) { (finished) in
+                            if finished {
+                                containerView.removeFromSuperview()
+                                completionHandler()
+                            }
                         }
                     }
                 }
-                index += 1
             }
-            
         }
-
-    }
-    
-    
-    @IBAction func playSound(_ sender: Any) {
-        player?.play()
-
-        timer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(stopSound), userInfo: nil, repeats: false)
-    }
     
     @objc func stopSound() {
         player?.pause()
