@@ -98,6 +98,85 @@
             </objects>
             <point key="canvasLocation" x="2758.0152671755723" y="3.5211267605633805"/>
         </scene>
+        <!--Player View Controller-->
+        <scene sceneID="3dv-DY-h8N">
+            <objects>
+                <viewController storyboardIdentifier="player" id="aC4-IM-kAQ" customClass="PlayerViewController" customModule="BlindTestIos" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jog-JD-SuM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ozE-NF-3Dn">
+                                <rect key="frame" x="91" y="144" width="211" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JD-j6-Eh8">
+                                <rect key="frame" x="16" y="581" width="361" height="194"/>
+                                <connections>
+                                    <segue destination="rmt-Ds-zau" kind="embed" identifier="SendPlayerDataSegue" id="616-XA-GoV"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRI-TI-cTi">
+                                <rect key="frame" x="159" y="223" width="75" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="H1z-CS-QB1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ozE-NF-3Dn" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="91" id="4gM-kW-522"/>
+                            <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="ozE-NF-3Dn" secondAttribute="trailing" constant="91" id="JMb-jc-i8Y"/>
+                            <constraint firstItem="4JD-j6-Eh8" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="16" id="OGe-CH-UbZ"/>
+                            <constraint firstItem="ozE-NF-3Dn" firstAttribute="top" secondItem="H1z-CS-QB1" secondAttribute="top" constant="85" id="PcQ-xe-vFS"/>
+                            <constraint firstItem="H1z-CS-QB1" firstAttribute="bottom" secondItem="4JD-j6-Eh8" secondAttribute="bottom" constant="43" id="SSy-Fn-NSS"/>
+                            <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="vRI-TI-cTi" secondAttribute="trailing" constant="159" id="iAz-aK-U2L"/>
+                            <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="4JD-j6-Eh8" secondAttribute="trailing" constant="16" id="lXf-tr-x5x"/>
+                            <constraint firstItem="vRI-TI-cTi" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="159" id="mdn-f5-ghr"/>
+                            <constraint firstItem="4JD-j6-Eh8" firstAttribute="top" secondItem="vRI-TI-cTi" secondAttribute="bottom" constant="323" id="rea-sa-gfg"/>
+                            <constraint firstItem="vRI-TI-cTi" firstAttribute="top" secondItem="ozE-NF-3Dn" secondAttribute="bottom" constant="45" id="sXs-mN-Gig"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="addPlayerButton" destination="vRI-TI-cTi" id="wHT-gM-tVA"/>
+                        <outlet property="embedPlayerListUiView" destination="4JD-j6-Eh8" id="aWc-2O-aTP"/>
+                        <outlet property="playerNameTextField" destination="ozE-NF-3Dn" id="3af-sc-Ft1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Iv1-Xd-w4j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3525.9541984732823" y="223.94366197183101"/>
+        </scene>
+        <!--Player List Table View Controller-->
+        <scene sceneID="QfB-ci-niK">
+            <objects>
+                <tableViewController id="rmt-Ds-zau" customClass="PlayerListTableViewController" customModule="BlindTestIos" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Kqn-wR-8st">
+                        <rect key="frame" x="0.0" y="0.0" width="361" height="194"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="aRd-l0-UgS">
+                                <rect key="frame" x="0.0" y="50" width="361" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aRd-l0-UgS" id="sg4-GF-0dV">
+                                    <rect key="frame" x="0.0" y="0.0" width="361" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="rmt-Ds-zau" id="StK-mb-PZa"/>
+                            <outlet property="delegate" destination="rmt-Ds-zau" id="aXh-Yx-GPl"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="8xi-dv-6Bu"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wsy-Ya-rrt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3230" y="796"/>
+        </scene>
         <!--Multi Difficulty View Controller-->
         <scene sceneID="6rT-2K-B5l">
             <objects>
@@ -145,7 +224,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kXk-fw-5vf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3527" y="206"/>
+            <point key="canvasLocation" x="4314" y="224"/>
         </scene>
         <!--Category View Controller-->
         <scene sceneID="5X9-p7-dIE">
@@ -434,13 +513,27 @@
                     <view key="view" contentMode="scaleToFill" id="Fjv-c0-pmE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="USV-8c-rrn">
+                                <rect key="frame" x="16" y="605" width="361" height="194"/>
+                                <connections>
+                                    <segue destination="rmt-Ds-zau" kind="embed" id="KCw-IL-f0i"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="dH8-rk-Nc7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dH8-rk-Nc7" firstAttribute="bottom" secondItem="USV-8c-rrn" secondAttribute="bottom" constant="19" id="KmA-9O-xMf"/>
+                            <constraint firstItem="USV-8c-rrn" firstAttribute="leading" secondItem="dH8-rk-Nc7" secondAttribute="leading" constant="16" id="L7j-dV-4nl"/>
+                            <constraint firstItem="dH8-rk-Nc7" firstAttribute="trailing" secondItem="USV-8c-rrn" secondAttribute="trailing" constant="16" id="Onr-gR-nuK"/>
+                            <constraint firstItem="USV-8c-rrn" firstAttribute="top" secondItem="dH8-rk-Nc7" secondAttribute="top" constant="546" id="Ttu-eT-p7w"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rkf-UT-sPc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4314" y="206"/>
+            <point key="canvasLocation" x="5102" y="224"/>
         </scene>
         <!--Multi Game View Controller-->
         <scene sceneID="cuv-Go-YE2">
@@ -455,7 +548,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Ev-Lu-Jpi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5076" y="206"/>
+            <point key="canvasLocation" x="5863" y="224"/>
         </scene>
         <!--Final Score View Controller-->
         <scene sceneID="lSs-ar-pRm">
@@ -485,9 +578,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yJO-Jb-B4r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5891" y="206"/>
+            <point key="canvasLocation" x="6679" y="224"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="616-XA-GoV"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
