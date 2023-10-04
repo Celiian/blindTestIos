@@ -22,16 +22,25 @@ class GameViewController: UIViewController {
     
     var player: AVPlayer?
     
-    var index: Int = 0
+    @IBOutlet weak var titleInput: UITextField!
+    @IBOutlet weak var artistInput: UITextField!
     
+    @IBOutlet weak var labels_points: UILabel!
+    
+    var index: Int = 0
+    var action: String = "Commencer"
+
+    var totalPoints: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.labels_points.text = "Points : \(totalPoints)"
         self.music_name.isHidden = true
         self.albumCover.isHidden = true
         self.trackNumber.isHidden = true
         self.playButton.isHidden = true
+        self.titleInput.isHidden = true
+        self.artistInput.isHidden = true
         self.playButton.titleLabel?.text = "Commencer"
         getSongs()
     }
@@ -97,13 +106,15 @@ class GameViewController: UIViewController {
 
     }
     
-    @IBAction func playSound(_ sender: Any) {
+    func playSound() {
         let audioDuration = 10.0
         self.playButton.isHidden = true
         
         var urlString = String()
         
         if self.previews_url[self.index]["url"] == "no_url" {
+            self.spinner.isHidden = false
+            self.spinner.startAnimating()
             let songName = self.previews_url[self.index]["name"]
            
             getVideoFromYt(songName: songName!) { videoURLString in
@@ -111,6 +122,8 @@ class GameViewController: UIViewController {
                 switch videoURLString {
                 case .success(let url):
                     let audioURL = url
+                    self.spinner.isHidden = true
+                    self.spinner.stopAnimating()
                     self.playSoundFromUrl(audioURL: audioURL, audioDuration : audioDuration, skip: true)
                 case .failure(let error):
                     print("Failed with error: \(error)")
@@ -163,11 +176,16 @@ class GameViewController: UIViewController {
             animateAndDisappearContainer(duration: audioDuration, disappearanceDuration: 1.0) {
                 self.player?.pause()
                 self.index += 1
-                self.music_name.isHidden = false
-                self.music_name.text = songName
-                self.albumCover.isHidden = false
-                self.playButton.setTitle("Continuer", for: .normal)
-                self.playButton.isHidden = false
+                
+                DispatchQueue.main.async {
+                    
+                    self.titleInput.isHidden = false
+                    
+                    self.music_name.text = songName
+                    
+                    self.playButton.setTitle("Valider", for: .normal)
+                    self.playButton.isHidden = false
+                }
             }
             
             
@@ -263,5 +281,105 @@ class GameViewController: UIViewController {
             }
         }
     }
+    
+    
+    
 
+    
+    
+    func calculatePoints(userInput: String, textToGuess: String) -> Float {
+        func removeContentBetweenParentheses(_ text: String) -> String {
+            var result = ""
+            var insideParentheses = false
+
+            for char in text {
+                if char == "(" {
+                    insideParentheses = true
+                } else if char == ")" {
+                    insideParentheses = false
+                } else if !insideParentheses {
+                    result.append(char)
+                }
+            }
+
+            return result
+        }
+        
+        func calculateWordSimilarity(_ word1: String, _ word2: String) -> Double {
+            let cleanedWord1 = removeContentBetweenParentheses(word1)
+            let cleanedWord2 = removeContentBetweenParentheses(word2)
+            
+            let word1Array = Array(cleanedWord1)
+            let word2Array = Array(cleanedWord2)
+            
+            var dp = [[Int]](repeating: [Int](repeating: 0, count: word2Array.count + 1), count: word1Array.count + 1)
+            
+            for i in 0...word1Array.count {
+                for j in 0...word2Array.count {
+                    if i == 0 {
+                        dp[i][j] = j
+                    } else if j == 0 {
+                        dp[i][j] = i
+                    } else if word1Array[i - 1] == word2Array[j - 1] {
+                        dp[i][j] = dp[i - 1][j - 1]
+                    } else {
+                        dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+                    }
+                }
+            }
+            
+            let maxLen = max(word1Array.count, word2Array.count)
+            let similarity = 1.0 - Double(dp[word1Array.count][word2Array.count]) / Double(maxLen)
+            
+            return similarity
+        }
+        
+        let similarity = calculateWordSimilarity(userInput, textToGuess)
+        
+    switch similarity {
+        case 0.85...1.0:
+            return 2.0
+        case 0.750..<0.85:
+            return 1.5
+        case 0.625..<0.750:
+            return 1.0
+        case 0.5..<0.625:
+            return 0.5
+        default:
+            return 0.0
+        }
+    }
+   
+    
+    
+    @IBAction func clickToCOntinue(_ sender: Any) {
+        if(self.action == "Suivant" || self.action == "Commencer"){
+            self.titleInput.text = ""
+            self.titleInput.isHidden = true
+
+            self.playButton.isHidden = true
+            self.playSound()
+            self.action = "Valider"
+        }
+        else {
+            if let userInput = self.titleInput.text?.uppercased(),
+               let textToGuess = self.music_name.text?.uppercased() {
+                let points = calculatePoints(userInput: userInput, textToGuess: textToGuess)
+                
+                
+                
+                DispatchQueue.main.async {
+                    self.albumCover.isHidden = false
+                    self.music_name.isHidden = false
+                    self.totalPoints += Int(points)
+                    self.labels_points.text = "Points : \(self.totalPoints)"
+                    self.playButton.setTitle("Suivant", for: .normal)
+                    self.action = "Suivant"
+                }
+            }
+
+        }
+    }
+    
+    
 }
