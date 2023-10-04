@@ -1,13 +1,13 @@
 //
-//  GameViewController.swift
+//  MultiGameViewController.swift
 //  BlindTestIos
 //
-//  Created by Philémon Wild on 03/10/2023.
+//  Created by Philémon Wild on 04/10/2023.
 //
 
 import UIKit
 
-class GameViewController: UIViewController {
+class MultiGameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
