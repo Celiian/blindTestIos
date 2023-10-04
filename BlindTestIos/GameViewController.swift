@@ -7,7 +7,7 @@
 
 import UIKit
 import AVFoundation
-
+import YouTubeKit
 class GameViewController: UIViewController {
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     
     var player: AVPlayer?
-    var timer: Timer?
+    
     var index: Int = 0
     
     
@@ -37,8 +37,7 @@ class GameViewController: UIViewController {
     }
 
     deinit {
-        self.timer?.invalidate()
-        self.timer = nil
+        self.player?.pause()
     }
 
     
@@ -63,6 +62,14 @@ class GameViewController: UIViewController {
                                    let albumImages = albumImage["images"] as? [[String: Any]],
                                    let coverURL = albumImages.first?["url"] as? String {
                                     return ["url": previewURL, "name": name, "coverURL": coverURL]
+                                }
+                                else {
+                                     if  let name = track["name"] as? String,
+                                       let albumImage = track["album"] as? [String: Any],
+                                       let albumImages = albumImage["images"] as? [[String: Any]],
+                                       let coverURL = albumImages.first?["url"] as? String {
+                                        return ["url": "no_url", "name": name, "coverURL": coverURL]
+                                    }
                                 }
                                 return nil
                             }
@@ -92,13 +99,35 @@ class GameViewController: UIViewController {
     
     @IBAction func playSound(_ sender: Any) {
         let audioDuration = 10.0
-        let timerDuration = 15.0
         self.playButton.isHidden = true
         
-        var progressTimer: Timer?
-                
-        if let urlString = self.previews_url[self.index]["url"], let audioURL = URL(string: urlString),
-           let songName = self.previews_url[self.index]["name"],
+        var urlString = String()
+        
+        if self.previews_url[self.index]["url"] == "no_url" {
+            let songName = self.previews_url[self.index]["name"]
+           
+            getVideoFromYt(songName: songName!) { videoURLString in
+                print("Song URL: \(videoURLString)")
+                switch videoURLString {
+                case .success(let url):
+                    let audioURL = url
+                    self.playSoundFromUrl(audioURL: audioURL, audioDuration : audioDuration, skip: true)
+                case .failure(let error):
+                    print("Failed with error: \(error)")
+                }
+            }
+        }
+        else {
+            urlString = self.previews_url[self.index]["url"]!
+            let audioURL = URL(string: urlString)
+            self.playSoundFromUrl(audioURL: audioURL!, audioDuration : audioDuration, skip: false)
+        }
+        
+    }
+    
+    
+    func playSoundFromUrl(audioURL : URL, audioDuration : Double, skip : Bool) {
+        if let songName = self.previews_url[self.index]["name"],
            let coverUrl = self.previews_url[self.index]["coverURL"]{
             self.player = AVPlayer(url: audioURL)
             self.albumCover.isHidden = true
@@ -119,7 +148,17 @@ class GameViewController: UIViewController {
             self.trackNumber.isHidden = false
             self.music_name.text = ""
             self.music_name.isHidden = true
-            self.player?.play()
+            
+            if skip {
+
+                let randomSkipTime = Int(arc4random_uniform(46)) + 25
+                let timeToSkip = CMTimeMakeWithSeconds(Float64(randomSkipTime), preferredTimescale: 1)
+                player?.seek(to: timeToSkip)
+                player?.play()
+            }
+            else {
+                self.player?.play()
+            }
             
             animateAndDisappearContainer(duration: audioDuration, disappearanceDuration: 1.0) {
                 self.player?.pause()
@@ -129,19 +168,15 @@ class GameViewController: UIViewController {
                 self.albumCover.isHidden = false
                 self.playButton.setTitle("Continuer", for: .normal)
                 self.playButton.isHidden = false
-                progressTimer?.invalidate()
             }
-
+            
             
             
             DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                 self.player?.pause()
             }
             
-            
-            
         }
-        
     }
     
     @objc func animateAndDisappearContainer(duration: TimeInterval, disappearanceDuration: TimeInterval, completionHandler: @escaping () -> Void) {
@@ -188,5 +223,45 @@ class GameViewController: UIViewController {
     }
    
  
+    
+    func getVideoFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        let parser = HTMLParser()
+        var video_id = ""
+        parser.search(value: songName) { videos in
+            if let videos = videos {
+                print("Total videos found: \(HTMLParser.videos.count)")
+                video_id = videos[1].videoId
+                
+                self.getUrlFromId(video_id: video_id) { result in
+                    switch result {
+                    case .success(let url):
+                        completion(.success(url))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+                
+            } else {
+                print("Error parsing HTML or no videos found.")
+            }
+        }
+
+    }
+    
+    
+    func getUrlFromId(video_id: String, completion: @escaping (Result<URL, Error>) -> Void) {
+        Task {
+            do {
+                let stream = try await YouTube(videoID: video_id).streams
+                                          .filterAudioOnly()
+                                          .filter { $0.subtype == "mp4" }
+                                          .highestAudioBitrateStream()
+                
+                completion(.success(stream!.url))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
 
 }
