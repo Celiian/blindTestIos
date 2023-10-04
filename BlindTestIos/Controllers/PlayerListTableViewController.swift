@@ -53,6 +53,15 @@ class PlayerListTableViewController: UITableViewController {
         playerTableView.reloadData()
         print(PlayerListTableViewController.playerData)
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let name : String = PlayerListTableViewController.playerData[indexPath.row].keys.first!
+        var score =  PlayerListTableViewController.playerData[indexPath.row].values.first
+        var newScore : Int = score! + 2
+        PlayerListTableViewController.playerData[indexPath.row] = [name : newScore]
+        playerTableView.reloadData()
+    }
 
 
     /*
