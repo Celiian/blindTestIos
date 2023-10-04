@@ -24,6 +24,8 @@
 		CFD42FD72ACD4ADA002F21B8 /* MultiDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */; };
 		CFD42FD92ACD4AE8002F21B8 /* MultiCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */; };
 		CFD42FDB2ACD4AFE002F21B8 /* MultiGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */; };
+		CFD42FDF2ACD6F04002F21B8 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FDE2ACD6F04002F21B8 /* PlayerViewController.swift */; };
+		CFD42FE32ACD7000002F21B8 /* PlayerListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FE22ACD7000002F21B8 /* PlayerListTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDifficultyViewController.swift; sourceTree = "<group>"; };
 		CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCategoryViewController.swift; sourceTree = "<group>"; };
 		CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiGameViewController.swift; sourceTree = "<group>"; };
+		CFD42FDE2ACD6F04002F21B8 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		CFD42FE22ACD7000002F21B8 /* PlayerListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 		CFD42FCF2ACD49C7002F21B8 /* MultiController */ = {
 			isa = PBXGroup;
 			children = (
+				CFD42FDE2ACD6F04002F21B8 /* PlayerViewController.swift */,
 				CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */,
 				CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */,
 				CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */,
@@ -126,6 +131,7 @@
 				CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */,
 				CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */,
 				CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */,
+				CFD42FE22ACD7000002F21B8 /* PlayerListTableViewController.swift */,
 				CFD42FCF2ACD49C7002F21B8 /* MultiController */,
 				CFD42FCE2ACD49A5002F21B8 /* SoloController */,
 			);
@@ -217,6 +223,8 @@
 				CF445C982ACC0AA500F4AF9F /* RulesViewController.swift in Sources */,
 				CF445C8F2ACC09D700F4AF9F /* ModeViewController.swift in Sources */,
 				CFD42FD92ACD4AE8002F21B8 /* MultiCategoryViewController.swift in Sources */,
+				CFD42FE32ACD7000002F21B8 /* PlayerListTableViewController.swift in Sources */,
+				CFD42FDF2ACD6F04002F21B8 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
