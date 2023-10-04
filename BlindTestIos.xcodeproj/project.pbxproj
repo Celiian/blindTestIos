@@ -22,6 +22,10 @@
 		CF445C962ACC0A9400F4AF9F /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */; };
 		CF445C982ACC0AA500F4AF9F /* RulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */; };
 		CFD42FCA2ACC3B87002F21B8 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */; };
+		CFD42FD32ACD4A9E002F21B8 /* FinalScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FD22ACD4A9E002F21B8 /* FinalScoreViewController.swift */; };
+		CFD42FD72ACD4ADA002F21B8 /* MultiDifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */; };
+		CFD42FD92ACD4AE8002F21B8 /* MultiCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */; };
+		CFD42FDB2ACD4AFE002F21B8 /* MultiGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +45,10 @@
 		CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesViewController.swift; sourceTree = "<group>"; };
 		CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		CFD42FD22ACD4A9E002F21B8 /* FinalScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalScoreViewController.swift; sourceTree = "<group>"; };
+		CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDifficultyViewController.swift; sourceTree = "<group>"; };
+		CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCategoryViewController.swift; sourceTree = "<group>"; };
+		CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiGameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,16 +82,11 @@
 		B041A5972ACC04780051AABA /* BlindTestIos */ = {
 			isa = PBXGroup;
 			children = (
+				CFD42FD12ACD49EE002F21B8 /* Controllers */,
 				B0DBF3232ACC5A030035CDB4 /* Helper */,
 				B041A5982ACC04780051AABA /* AppDelegate.swift */,
 				B041A59A2ACC04780051AABA /* SceneDelegate.swift */,
 				B041A59C2ACC04780051AABA /* ViewController.swift */,
-				CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */,
-				CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */,
-				CF445C902ACC0A1000F4AF9F /* CategoryViewController.swift */,
-				CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */,
-				CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */,
-				CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */,
 				B041A59E2ACC04780051AABA /* Main.storyboard */,
 				B041A5A12ACC047B0051AABA /* Assets.xcassets */,
 				B041A5A32ACC047B0051AABA /* LaunchScreen.storyboard */,
@@ -99,6 +102,39 @@
 				B0DBF3262ACD73AF0035CDB4 /* YoutubeParser.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		CFD42FCE2ACD49A5002F21B8 /* SoloController */ = {
+			isa = PBXGroup;
+			children = (
+				CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */,
+				CF445C902ACC0A1000F4AF9F /* CategoryViewController.swift */,
+				CFD42FC92ACC3B87002F21B8 /* GameViewController.swift */,
+				CFD42FD22ACD4A9E002F21B8 /* FinalScoreViewController.swift */,
+			);
+			path = SoloController;
+			sourceTree = "<group>";
+		};
+		CFD42FCF2ACD49C7002F21B8 /* MultiController */ = {
+			isa = PBXGroup;
+			children = (
+				CFD42FD62ACD4ADA002F21B8 /* MultiDifficultyViewController.swift */,
+				CFD42FD82ACD4AE8002F21B8 /* MultiCategoryViewController.swift */,
+				CFD42FDA2ACD4AFE002F21B8 /* MultiGameViewController.swift */,
+			);
+			path = MultiController;
+			sourceTree = "<group>";
+		};
+		CFD42FD12ACD49EE002F21B8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */,
+				CF445C972ACC0AA500F4AF9F /* RulesViewController.swift */,
+				CF445C952ACC0A9400F4AF9F /* ScoreViewController.swift */,
+				CFD42FCF2ACD49C7002F21B8 /* MultiController */,
+				CFD42FCE2ACD49A5002F21B8 /* SoloController */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,8 +214,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFD42FDB2ACD4AFE002F21B8 /* MultiGameViewController.swift in Sources */,
 				B0DBF3252ACC5A3E0035CDB4 /* RequestSpotify.swift in Sources */,
 				CF445C962ACC0A9400F4AF9F /* ScoreViewController.swift in Sources */,
+				CFD42FD32ACD4A9E002F21B8 /* FinalScoreViewController.swift in Sources */,
+				CFD42FD72ACD4ADA002F21B8 /* MultiDifficultyViewController.swift in Sources */,
 				CF445C912ACC0A1000F4AF9F /* CategoryViewController.swift in Sources */,
 				CF445C932ACC0A3200F4AF9F /* DifficultyViewController.swift in Sources */,
 				B041A59D2ACC04780051AABA /* ViewController.swift in Sources */,
@@ -189,6 +228,7 @@
 				B0DBF3272ACD73AF0035CDB4 /* YoutubeParser.swift in Sources */,
 				CF445C982ACC0AA500F4AF9F /* RulesViewController.swift in Sources */,
 				CF445C8F2ACC09D700F4AF9F /* ModeViewController.swift in Sources */,
+				CFD42FD92ACD4AE8002F21B8 /* MultiCategoryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
