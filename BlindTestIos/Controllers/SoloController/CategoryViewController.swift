@@ -34,6 +34,8 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var placeholderNavButton: UIButton!
     
+    var difficulty = "Simple"
+    
     var yourDataArray = [AnyObject]()
 
     override func viewDidLoad() {
@@ -81,8 +83,10 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
             if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController {
-                VC.artist = yourDataArray[indexPath.row] as? [String : Any]
-                self.navigationController?.pushViewController(VC, animated: true)
+                if difficulty == "Simple"{
+                    VC.artist = yourDataArray[indexPath.row] as? [String : Any]
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
             }
 
         }

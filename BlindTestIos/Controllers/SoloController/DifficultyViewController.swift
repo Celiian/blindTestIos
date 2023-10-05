@@ -11,6 +11,8 @@ class DifficultyViewController: UIViewController {
 
     @IBOutlet weak var difficultyButton: UIButton!
     @IBOutlet weak var difficultyLabel: UILabel!
+    
+    var difficulty = "easy"
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,6 +22,7 @@ class DifficultyViewController: UIViewController {
 
     @IBAction func diffClick(_ sender: Any) {
         if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "category") as? CategoryViewController{
+            VC.difficulty = (sender as! UIButton).titleLabel!.text!
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }
