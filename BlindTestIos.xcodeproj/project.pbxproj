@@ -164,6 +164,7 @@
 			packageProductDependencies = (
 				B0DBF3292ACD770C0035CDB4 /* YouTubeKit */,
 				B0DBF32B2ACD8F1C0035CDB4 /* YouTubeKit */,
+
 			);
 			productName = BlindTestIos;
 			productReference = B041A5952ACC04780051AABA /* BlindTestIos.app */;

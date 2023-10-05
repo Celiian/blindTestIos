@@ -35,6 +35,7 @@ class HTMLParser {
                 let firsts = html.ranges(of: "ytInitialData")
                 let ends = html.ranges(of: "';<")
                 _ = html.distance(from: html.startIndex, to: firsts.first!.lowerBound)
+                let index = html.distance(from: html.startIndex, to: firsts.first!.lowerBound)
                 let ytData = html[html.index(firsts.first!.lowerBound, offsetBy: 17)...html.index(before: ends.first!.lowerBound)].replacingOccurrences(of: "\\x22", with: "\"").replacingOccurrences(of: "\\x7b", with: "{").replacingOccurrences(of: "\\x7d", with: "}").replacingOccurrences(of: "\\x3d", with: "=").replacingOccurrences(of: "\\x5b", with: "[").replacingOccurrences(of: "\\x5d", with: "]").replacingOccurrences(of: "\\x27", with: "'").replacingOccurrences(of: "u0026", with: "&").replacingOccurrences(of: "\\\"", with: "다자바무커").replacingOccurrences(of: "\\", with: "").replacingOccurrences(of: "다자바무커", with: "\\\"")
                 //print(ytData)
                 let ytJson = ytData.data(using: .utf8)

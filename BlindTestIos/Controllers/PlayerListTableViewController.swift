@@ -9,7 +9,10 @@ import UIKit
 
 class PlayerListTableViewController: UITableViewController {
     
-    var playerData: [[String:Int]] = []
+
+    @IBOutlet var playerTableView: UITableView!
+     static var playerData: [[String:Int]] = []
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,42 +32,44 @@ class PlayerListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var rows = self.playerData.count
-        if rows == 0{
-            rows = 1
-        }
+
+        var rows = PlayerListTableViewController.playerData.count
+
 
         return rows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = "nique"
-        // Configure the cell with data from yourDataArray
-//        if let artistName = playerData[indexPath.row].key{
-//            cell.textLabel?.text = artistName
-//            
-//        } else {
-//            cell.textLabel?.text = "Unknown"
-//        }
+
+        // cell.textLabel?.text = "nique"
+        if let artistName = PlayerListTableViewController.playerData[indexPath.row].keys.first{
+            var score = PlayerListTableViewController.playerData[indexPath.row].values.first
+            cell.textLabel?.text = "\(artistName)  \(score ?? 0)"
+        } else {
+            cell.textLabel?.text = "Unknown"
+        }
        
         return cell
     }
     
-    func setData(name: String){
-        playerData.append([name : 0])
-        print(playerData)
+
+    func setData(data: [[String : Int]]){
+        PlayerListTableViewController.playerData = data
+        playerTableView.reloadData()
+        print(PlayerListTableViewController.playerData)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let name : String = PlayerListTableViewController.playerData[indexPath.row].keys.first!
+        var score =  PlayerListTableViewController.playerData[indexPath.row].values.first
+        var newScore : Int = score! + 2
+        PlayerListTableViewController.playerData[indexPath.row] = [name : newScore]
+        playerTableView.reloadData()
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        // Configure the cell...
-
-        return cell
-    }
-    */
 
     /*
     // Override to support conditional editing of the table view.

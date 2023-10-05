@@ -9,12 +9,22 @@ import UIKit
 
 class MultiCategoryViewController: UIViewController {
 
+
+    @IBOutlet weak var navButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+
+
+    @IBAction func navClick(_ sender: Any) {
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiGame") as? MultiGameViewController{
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
 
     /*
     // MARK: - Navigation

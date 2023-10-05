@@ -1,9 +1,14 @@
+
+//
+//  GameViewController.swift
+//  BlindTestIos
+//
+//  Created by Philémon Wild on 03/10/2023.
+//
+
 import UIKit
 import AVFoundation
 import YouTubeKit
-import AVKit
-
-
 class GameViewController: UIViewController {
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -53,6 +58,7 @@ class GameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.player?.pause()
     }
+
     
     
     func getSongs () {
@@ -67,6 +73,7 @@ class GameViewController: UIViewController {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                            let tracks = json["tracks"] as? [[String: Any]] {
                             
+
                             var previewDictionary = tracks.compactMap { track in
                                 if let previewURL = track["preview_url"] as? String,
                                    let name = track["name"] as? String,
@@ -80,14 +87,15 @@ class GameViewController: UIViewController {
                                         let albumImage = track["album"] as? [String: Any],
                                         let albumImages = albumImage["images"] as? [[String: Any]],
                                         let coverURL = albumImages.first?["url"] as? String {
+
                                         return ["url": "no_url", "name": name, "coverURL": coverURL]
                                     }
                                 }
                                 return nil
                             }
-                            
+                           
                             previewDictionary.shuffle()
-                            
+              
                             
                             self.previews_url = previewDictionary
                             DispatchQueue.main.async {
@@ -105,6 +113,7 @@ class GameViewController: UIViewController {
                 print("Error or nil result")
             }
         }
+
     }
     
     func playSound() {
@@ -145,6 +154,7 @@ class GameViewController: UIViewController {
         
         
         
+
         
     }
     
@@ -153,10 +163,9 @@ class GameViewController: UIViewController {
         if let songName = self.previews_url[self.index]["name"],
            let coverUrl = self.previews_url[self.index]["coverURL"]{
             self.player = AVPlayer(url: audioURL)
-            
-            
+           
+ 
             self.album_url = coverUrl
-            
             
             self.trackNumber.text = "\(index + 1) / \(self.previews_url.count )"
             self.trackNumber.isHidden = false
@@ -189,6 +198,7 @@ class GameViewController: UIViewController {
                     self.playButton.setTitle("Valider", for: .normal)
                     self.playButton.isHidden = false
                 }
+
             }
             
             
@@ -232,6 +242,7 @@ class GameViewController: UIViewController {
                         if finished {
                             containerView.removeFromSuperview()
                             completionHandler()
+
                         }
                     }
                 }
@@ -242,7 +253,6 @@ class GameViewController: UIViewController {
     @objc func stopSound() {
         player?.pause()
     }
-    
     
     
     func getAudioFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -268,6 +278,7 @@ class GameViewController: UIViewController {
         }
         
     }
+
     
     func getVideoFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let parser = HTMLParser()
@@ -302,14 +313,12 @@ class GameViewController: UIViewController {
                     .filterAudioOnly()
                     .filter { $0.subtype == "mp4" }
                     .highestAudioBitrateStream()
-                
                 completion(.success(stream!.url))
             } catch {
                 completion(.failure(error))
             }
         }
     }
-    
     
     func getUrlVideoFromId(video_id: String, completion: @escaping (Result<URL, Error>) -> Void) {
         Task {
@@ -473,5 +482,4 @@ class GameViewController: UIViewController {
         }
         
     }
-    
 }

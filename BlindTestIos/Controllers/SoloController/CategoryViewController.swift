@@ -125,7 +125,8 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
                             }
                             
                         } catch {
-                           //print(error.localizedDescription)
+
+                            print(error.localizedDescription)
                         }
                     }
                     
