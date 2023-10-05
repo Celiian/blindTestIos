@@ -13,7 +13,6 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var artistTableView: UITableView!
     
     var yourDataArray = [AnyObject]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.artistTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -28,6 +27,7 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1 // You can change this based on your data structure
     }
+
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return yourDataArray.count
@@ -49,6 +49,7 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
            let imageURL = URL(string: imageURLString) {
             cell.imageView?.downloaded(from: imageURL)
         } else {
+
         }
        
         return cell
@@ -110,6 +111,7 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
 //            self.navigationController?.pushViewController(VC, animated: true)
 //        }
 //    }
+
     /*
     // MARK: - Navigation
 

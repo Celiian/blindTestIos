@@ -57,7 +57,6 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-
         // Configure the cell with data from yourDataArray
         if let artistName = yourDataArray[indexPath.row]["name"] as? String {
             cell.textLabel?.text = artistName
@@ -126,6 +125,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
                             }
                             
                         } catch {
+
                             print(error.localizedDescription)
                         }
                     }
