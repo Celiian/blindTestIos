@@ -13,8 +13,6 @@ class ModeViewController: UIViewController {
     @IBOutlet weak var soloButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
 
