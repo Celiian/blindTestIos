@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item-->
+        <!--Accueil-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BlindTestIos" customModuleProvider="target" sceneMemberID="viewController">
@@ -49,7 +49,10 @@
                             <constraint firstItem="WtM-rv-won" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="vkO-bL-uzv"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="dp7-tu-iQa"/>
+                    <tabBarItem key="tabBarItem" title="Accueil" image="maison" id="dp7-tu-iQa">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="5"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="gxe-jm-9D4"/>
                     <connections>
                         <outlet property="playButton" destination="Ilm-5U-KDl" id="RNn-pc-6Da"/>
@@ -533,7 +536,7 @@
             </objects>
             <point key="canvasLocation" x="5075.5725190839694" y="-486.61971830985919"/>
         </scene>
-        <!--Item-->
+        <!--Règles-->
         <scene sceneID="AxN-FE-J5q">
             <objects>
                 <viewController storyboardIdentifier="rules" id="0P3-NH-5s1" customClass="RulesViewController" customModule="BlindTestIos" customModuleProvider="target" sceneMemberID="viewController">
@@ -555,7 +558,7 @@
                                 <rect key="frame" x="42" y="116" width="309" height="653"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.48618584437086093" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">- Sélection du niveau de difficulté :
+                                <string key="text">- Sélection du niveau de difficulté :
 
 Facile : Choisissez un artiste, puis jouez des extraits de ses meilleures chansons.
 Moyen : Choisissez plusieurs artistes, puis jouez des extraits aléatoires de leurs chansons.
@@ -579,7 +582,7 @@ Attribution des points :
 En équipe ou en multijoueur : La preière équipesou les joueurs marquent des points pour avoir donné la bonne réponse le plus rapidement possible ( modération des points à votre discrétion )
 - Fin du jeu :
 Le jeu se termine au bout de 10 extraits
-L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est déclaré vainqueur.</mutableString>
+L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est déclaré vainqueur.</string>
                                 <color key="textColor" red="1" green="0.53199023079999996" blue="0.8751876609" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -594,7 +597,11 @@ L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est 
                             <constraint firstItem="i5G-Zu-sdn" firstAttribute="leading" secondItem="H84-wE-iPG" secondAttribute="leading" id="frx-ze-mFw"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="ebP-D1-L0c"/>
+                    <tabBarItem key="tabBarItem" title="Règles" image="regles" id="ebP-D1-L0c">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
+                        <color key="badgeColor" red="0.36862745099999999" green="0.36078431370000003" blue="0.90196078430000004" alpha="0.69577814569999996" colorSpace="custom" customColorSpace="sRGB"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="5"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKn-eJ-bZ4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -628,6 +635,9 @@ L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est 
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.36862745099999999" green="0.36078431370000003" blue="0.90196078430000004" alpha="0.11229822020331125" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" red="1" green="0.27768249729565664" blue="0.73798172176932464" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="gTE-HJ-Lb4"/>
@@ -865,8 +875,10 @@ L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est 
         <image name="?" width="612" height="408"/>
         <image name="appName" width="971" height="181"/>
         <image name="bg" width="612" height="1080"/>
+        <image name="maison" width="45" height="45"/>
         <image name="multi" width="350" height="622"/>
         <image name="players" width="620" height="1094"/>
+        <image name="regles" width="45" height="45"/>
         <image name="rules" width="618" height="1093"/>
         <image name="score" width="800" height="1422"/>
         <image name="solo" width="683" height="1024"/>
