@@ -117,6 +117,8 @@ class GameViewController: UIViewController {
     }
     
     func playSound() {
+        self.albumCover.isHidden = false
+
         let audioDuration = 10.0
         self.playButton.isHidden = true
         
@@ -211,44 +213,41 @@ class GameViewController: UIViewController {
     }
     
     @objc func animateAndDisappearContainer(duration: TimeInterval, disappearanceDuration: TimeInterval, completionHandler: @escaping () -> Void) {
-        let screenWidth = UIScreen.main.bounds.size.width
-        let screenHeight = UIScreen.main.bounds.size.height
-        let containerWidth: CGFloat = screenWidth * 0.8
-        let containerHeight: CGFloat = screenHeight * 0.05
-        let containerX = (screenWidth - containerWidth) / 2
-        let containerY = screenHeight * 0.75 - containerHeight / 2
-        
-        let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
-        containerView.backgroundColor = UIColor.white
-        containerView.layer.cornerRadius = containerHeight / 2
-        containerView.layer.borderWidth = 1.0
-        containerView.layer.borderColor = UIColor.black.cgColor
-        
-        let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
-        fillView.backgroundColor = UIColor.green
-        fillView.layer.cornerRadius = containerHeight / 2
-        containerView.addSubview(fillView)
-        
-        self.view.addSubview(containerView)
-        
-        UIView.animate(withDuration: duration, animations: {
-            fillView.frame.size.width = containerView.frame.width
-        }) { (completed) in
-            if completed {
-                DispatchQueue.main.asyncAfter(deadline: .now() + disappearanceDuration) {
-                    UIView.animate(withDuration: disappearanceDuration, animations: {
-                        containerView.alpha = 0.0
-                    }) { (finished) in
-                        if finished {
-                            containerView.removeFromSuperview()
-                            completionHandler()
+            let screenWidth = UIScreen.main.bounds.size.width
+            let screenHeight = UIScreen.main.bounds.size.height
+            let containerWidth: CGFloat = screenWidth * 0.65
+            let containerHeight: CGFloat = screenHeight * 0.01
+            let containerX = (screenWidth - containerWidth) / 2
+            let containerY = screenHeight * 0.75 - containerHeight / 2
+            
+            let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
+            
+            let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
+            fillView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.99, alpha: 1.0)
+            fillView.layer.cornerRadius = containerHeight / 2
+            containerView.addSubview(fillView)
 
+            
+            self.view.addSubview(containerView)
+            
+            UIView.animate(withDuration: duration, animations: {
+                fillView.frame.size.width = containerView.frame.width
+            }) { (completed) in
+                if completed {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + disappearanceDuration) {
+                        UIView.animate(withDuration: disappearanceDuration, animations: {
+                            containerView.alpha = 0.0
+                        }) { (finished) in
+                            if finished {
+                                containerView.removeFromSuperview()
+                                completionHandler()
+
+                            }
                         }
                     }
                 }
             }
         }
-    }
     
     @objc func stopSound() {
         player?.pause()
@@ -423,16 +422,6 @@ class GameViewController: UIViewController {
                let textToGuess = self.music_name.text?.uppercased() {
                 let points = calculatePoints(userInput: userInput, textToGuess: textToGuess)
                 
-                if let url = URL(string: self.album_url) {
-                    URLSession.shared.dataTask(with: url) { (data, response, error) in
-                        if let data = data {
-                            DispatchQueue.main.async {
-                                self.albumCover.image = UIImage(data: data)
-                            }
-                        }
-                    }.resume()
-                }
-                
                 self.displayVideo()
                 DispatchQueue.main.async {
                     self.music_name.isHidden = false
@@ -475,7 +464,8 @@ class GameViewController: UIViewController {
             
             self.player?.play()
             self.videoPlayer?.play()
-            
+            self.albumCover.isHidden = true
+
             
             self.video_view.isHidden = false
             
