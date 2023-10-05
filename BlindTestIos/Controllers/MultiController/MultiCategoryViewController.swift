@@ -13,6 +13,7 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var artistTableView: UITableView!
     
     var yourDataArray = [AnyObject]()
+    var difficulty = "Simple"
     override func viewDidLoad() {
         super.viewDidLoad()
         self.artistTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -60,8 +61,11 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
             if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiGame") as? MultiGameViewController {
-                VC.artist = yourDataArray[indexPath.row] as? [String : Any]
-                self.navigationController?.pushViewController(VC, animated: true)
+                // difficulty is either "Simple" "Medium" or "Hard
+                if difficulty == "Simple"{
+                    VC.artist = yourDataArray[indexPath.row] as? [String : Any]
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
             }
 
         }
