@@ -9,13 +9,19 @@ func getSpotify(type: String, parameter: String,  parameterType: String, complet
     let acces_token = defaults.string(forKey: DefaultsKeys.token)
     
     var urlBuilt: String
-    
+    print(type)
     if type == "search" {
         urlBuilt = "https://api.spotify.com/v1/\(type)?q=\(parameter)&type=\(parameterType)"
-    } else {
+    }
+    else if type.contains("recommendations")  {
+        urlBuilt = "https://api.spotify.com/v1/\(type)\(parameter)\(parameterType)"
+    }
+    else {
         urlBuilt = "https://api.spotify.com/v1/\(type)/\(parameter)\(parameterType)"
     }
     
+    
+    print(urlBuilt)
     
     
     if let url = URL(string: urlBuilt) {
