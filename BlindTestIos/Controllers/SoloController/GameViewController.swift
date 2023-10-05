@@ -335,27 +335,99 @@ class GameViewController: UIViewController {
     
     
     
-    
-    func calculatePoints(userInput: String, textToGuess: String) -> Float {
-        func removeContentBetweenParentheses(_ text: String) -> String {
+
+    func performWordComparison(userInput: String, textToGuess: String) -> Float {
+        
+        func removeContentFromParentheses(_ text: String) -> String {
             var result = ""
             var insideParentheses = false
-            
+
             for char in text {
                 if char == "(" {
                     insideParentheses = true
+                } else if char == ")" {
+                    insideParentheses = false
                 }
+
                 if !insideParentheses {
                     result.append(char)
                 }
             }
-            
+
             return result
         }
-        
+
+        func cleanText(_ text: String) -> String {
+            let validCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ")
+            return String(text.unicodeScalars.filter { validCharacterSet.contains($0) })
+        }
+
+        func romanToArabic(_ romanNumeral: String) -> Int? {
+            let romanNumerals: [Character: Int] = [
+                "I": 1,
+                "V": 5,
+                "X": 10,
+                "L": 50,
+                "C": 100,
+                "D": 500,
+                "M": 1000
+            ]
+
+            var arabicNumeral = 0
+            var prevValue = 0
+
+            for numeral in romanNumeral.reversed() {
+                if let value = romanNumerals[numeral] {
+                    if value < prevValue {
+                        arabicNumeral -= value
+                    } else {
+                        arabicNumeral += value
+                    }
+                    prevValue = value
+                } else {
+                    return nil
+                }
+            }
+
+            return arabicNumeral
+        }
+
+        func convertRomanToArabic(_ text: inout String) {
+            let regexPattern = "\\b[IVXLCDM]+\\b"
+            let regex = try! NSRegularExpression(pattern: regexPattern, options: .caseInsensitive)
+            
+            let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+            
+            for match in matches {
+                let range = Range(match.range, in: text)!
+                let romanNumeral = String(text[range])
+                
+                if let arabicValue = romanToArabic(romanNumeral) {
+                    text = text.replacingOccurrences(of: romanNumeral, with: "\(arabicValue)")
+                }
+            }
+        }
+
+        func removeContentAfterHyphen(_ text: String) -> String {
+            if let range = text.range(of: "-") {
+                return String(text.prefix(upTo: range.lowerBound))
+            }
+            return text
+        }
+
+        func processText(_ text: inout String) {
+            text = removeContentAfterHyphen(text)
+            text = cleanText(removeContentFromParentheses(text))
+            convertRomanToArabic(&text)
+            text = text.trimmingCharacters(in: .whitespaces)
+        }
+
         func calculateWordSimilarity(_ word1: String, _ word2: String) -> Double {
-            let cleanedWord1 = removeContentBetweenParentheses(word1)
-            let cleanedWord2 = removeContentBetweenParentheses(word2)
+            var cleanedWord1 = word1
+            var cleanedWord2 = word2
+            
+            processText(&cleanedWord1)
+            processText(&cleanedWord2)
             
             let word1Array = Array(cleanedWord1)
             let word2Array = Array(cleanedWord2)
@@ -381,23 +453,27 @@ class GameViewController: UIViewController {
             
             return similarity
         }
-        
-        let similarity = calculateWordSimilarity(userInput, textToGuess)
-        
-        switch similarity {
-        case 0.85...1.0:
-            return 2.0
-        case 0.750..<0.85:
-            return 1.5
-        case 0.625..<0.750:
-            return 1.0
-        case 0.5..<0.625:
-            return 0.5
-        default:
-            return 0.0
+
+        // Appel de la fonction calculatePoints ici
+        func calculatePoints(userInput: String, textToGuess: String) -> Float {
+            let similarity = calculateWordSimilarity(userInput, textToGuess)
+            
+            switch similarity {
+            case 0.85...1.0:
+                return 2.0
+            case 0.750..<0.85:
+                return 1.5
+            case 0.625..<0.750:
+                return 1.0
+            case 0.5..<0.625:
+                return 0.5
+            default:
+                return 0.0
+            }
         }
+
+        return calculatePoints(userInput: userInput, textToGuess: textToGuess)
     }
-    
     
     
     @IBAction func clickToCOntinue(_ sender: Any) {
@@ -420,7 +496,7 @@ class GameViewController: UIViewController {
         else {
             if let userInput = self.titleInput.text?.uppercased(),
                let textToGuess = self.music_name.text?.uppercased() {
-                let points = calculatePoints(userInput: userInput, textToGuess: textToGuess)
+                let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
                 
                 self.displayVideo()
                 DispatchQueue.main.async {
