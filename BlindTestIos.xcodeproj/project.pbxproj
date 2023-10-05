@@ -16,6 +16,7 @@
 		B0DBF3252ACC5A3E0035CDB4 /* RequestSpotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBF3242ACC5A3E0035CDB4 /* RequestSpotify.swift */; };
 		B0DBF3272ACD73AF0035CDB4 /* YoutubeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DBF3262ACD73AF0035CDB4 /* YoutubeParser.swift */; };
 		B0DBF32A2ACD770C0035CDB4 /* YouTubeKit in Frameworks */ = {isa = PBXBuildFile; productRef = B0DBF3292ACD770C0035CDB4 /* YouTubeKit */; };
+		B0DBF32C2ACD8F1C0035CDB4 /* YouTubeKit in Frameworks */ = {isa = PBXBuildFile; productRef = B0DBF32B2ACD8F1C0035CDB4 /* YouTubeKit */; };
 		CF445C8F2ACC09D700F4AF9F /* ModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C8E2ACC09D700F4AF9F /* ModeViewController.swift */; };
 		CF445C912ACC0A1000F4AF9F /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C902ACC0A1000F4AF9F /* CategoryViewController.swift */; };
 		CF445C932ACC0A3200F4AF9F /* DifficultyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF445C922ACC0A3200F4AF9F /* DifficultyViewController.swift */; };
@@ -61,6 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0DBF32A2ACD770C0035CDB4 /* YouTubeKit in Frameworks */,
+				B0DBF32C2ACD8F1C0035CDB4 /* YouTubeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +163,8 @@
 			name = BlindTestIos;
 			packageProductDependencies = (
 				B0DBF3292ACD770C0035CDB4 /* YouTubeKit */,
+				B0DBF32B2ACD8F1C0035CDB4 /* YouTubeKit */,
+
 			);
 			productName = BlindTestIos;
 			productReference = B041A5952ACC04780051AABA /* BlindTestIos.app */;
@@ -471,6 +475,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		B0DBF3292ACD770C0035CDB4 /* YouTubeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B0DBF3282ACD770B0035CDB4 /* XCRemoteSwiftPackageReference "YouTubeKit" */;
+			productName = YouTubeKit;
+		};
+		B0DBF32B2ACD8F1C0035CDB4 /* YouTubeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B0DBF3282ACD770B0035CDB4 /* XCRemoteSwiftPackageReference "YouTubeKit" */;
 			productName = YouTubeKit;

@@ -9,8 +9,10 @@ import UIKit
 
 class PlayerListTableViewController: UITableViewController {
     
+
     @IBOutlet var playerTableView: UITableView!
      static var playerData: [[String:Int]] = []
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,14 +32,17 @@ class PlayerListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
         var rows = PlayerListTableViewController.playerData.count
+
 
         return rows
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-//        cell.textLabel?.text = "nique"
+
+        // cell.textLabel?.text = "nique"
         if let artistName = PlayerListTableViewController.playerData[indexPath.row].keys.first{
             var score = PlayerListTableViewController.playerData[indexPath.row].values.first
             cell.textLabel?.text = "\(artistName)  \(score ?? 0)"
@@ -48,6 +53,7 @@ class PlayerListTableViewController: UITableViewController {
         return cell
     }
     
+
     func setData(data: [[String : Int]]){
         PlayerListTableViewController.playerData = data
         playerTableView.reloadData()
@@ -62,6 +68,7 @@ class PlayerListTableViewController: UITableViewController {
         PlayerListTableViewController.playerData[indexPath.row] = [name : newScore]
         playerTableView.reloadData()
     }
+
 
 
     /*

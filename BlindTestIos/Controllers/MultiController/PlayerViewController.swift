@@ -9,9 +9,11 @@ import UIKit
 
 class PlayerViewController: UIViewController {
     
+
     var playerData : [[String : Int]] = []
 
     @IBOutlet weak var continueButton: UIButton!
+
     @IBOutlet weak var embedPlayerListUiView: UIView!
     @IBOutlet weak var playerNameTextField: UITextField!
     @IBOutlet weak var addPlayerButton: UIButton!
@@ -24,6 +26,7 @@ class PlayerViewController: UIViewController {
     }
     
     
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier, identifier == "SendPlayerDataSegue" {
             if let embedControllerVC = segue.destination as? PlayerListTableViewController{

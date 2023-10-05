@@ -40,7 +40,7 @@ func getSpotify(type: String, parameter: String,  parameterType: String, complet
             if let data = data {
                 // Parse and use the response data here
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    if try JSONSerialization.jsonObject(with: data, options: []) is [String: Any] {
                         // You can extract and process data from the JSON here
                         // For now, let's just convert it back to a string for demonstration
                         let jsonString = String(data: data, encoding: .utf8)
