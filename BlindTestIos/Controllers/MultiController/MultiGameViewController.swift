@@ -219,7 +219,7 @@ class MultiGameViewController: UIViewController {
                 }
                 else {
                     self.playSound()
-                }   a
+                }
             }
         }
     }
