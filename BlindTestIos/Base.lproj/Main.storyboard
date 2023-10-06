@@ -134,7 +134,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4JD-j6-Eh8">
-                                <rect key="frame" x="74" y="354" width="245" height="296"/>
+                                <rect key="frame" x="74" y="407" width="245" height="243"/>
                                 <connections>
                                     <segue destination="rmt-Ds-zau" kind="embed" identifier="SendPlayerDataSegue" id="616-XA-GoV"/>
                                 </connections>
@@ -151,7 +151,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsU-Um-HT6">
-                                <rect key="frame" x="95" y="282" width="207" height="35"/>
+                                <rect key="frame" x="95" y="335" width="207" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="0.25281974340000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="207" id="JHh-tr-ncA"/>
@@ -164,23 +164,39 @@
                                     <action selector="continueClick:" destination="aC4-IM-kAQ" eventType="touchUpInside" id="xGa-jn-I4j"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oQM-iI-qU0">
+                                <rect key="frame" x="91" y="277" width="211" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="0.25281974340000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="211" id="rkZ-XR-Ttr"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Retirer dernier">
+                                    <color key="baseForegroundColor" red="1" green="0.63279128330000001" blue="0.83938510470000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="emptyPlayer:" destination="aC4-IM-kAQ" eventType="touchUpInside" id="lvc-lN-DHI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H1z-CS-QB1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="xsU-Um-HT6" firstAttribute="top" secondItem="vRI-TI-cTi" secondAttribute="bottom" constant="26" id="2EM-yW-oZb"/>
                             <constraint firstItem="ozE-NF-3Dn" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="91" id="4gM-kW-522"/>
                             <constraint firstItem="vRI-TI-cTi" firstAttribute="top" secondItem="ozE-NF-3Dn" secondAttribute="bottom" constant="43" id="6Yh-ly-vdx"/>
                             <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="vRI-TI-cTi" secondAttribute="trailing" constant="91" id="IJg-xR-JKw"/>
                             <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="ozE-NF-3Dn" secondAttribute="trailing" constant="91" id="JMb-jc-i8Y"/>
                             <constraint firstItem="ozE-NF-3Dn" firstAttribute="top" secondItem="jog-JD-SuM" secondAttribute="top" constant="144" id="KXK-8u-AFA"/>
                             <constraint firstItem="4JD-j6-Eh8" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="74" id="PoY-3M-BS6"/>
+                            <constraint firstItem="xsU-Um-HT6" firstAttribute="top" secondItem="oQM-iI-qU0" secondAttribute="bottom" constant="23" id="Rjj-jK-tG1"/>
                             <constraint firstItem="4JD-j6-Eh8" firstAttribute="top" secondItem="xsU-Um-HT6" secondAttribute="bottom" constant="37" id="WZc-pI-gtC"/>
                             <constraint firstAttribute="bottom" secondItem="hys-sR-Hmm" secondAttribute="bottom" id="eAb-JT-Ns1"/>
                             <constraint firstItem="H1z-CS-QB1" firstAttribute="bottom" secondItem="4JD-j6-Eh8" secondAttribute="bottom" constant="168" id="iCZ-1o-xBD"/>
                             <constraint firstItem="vRI-TI-cTi" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="91" id="ixR-B0-TKJ"/>
+                            <constraint firstItem="oQM-iI-qU0" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="91" id="jEp-sS-afD"/>
                             <constraint firstItem="H1z-CS-QB1" firstAttribute="trailing" secondItem="4JD-j6-Eh8" secondAttribute="trailing" constant="74" id="kgQ-SP-TPF"/>
                             <constraint firstItem="hys-sR-Hmm" firstAttribute="top" secondItem="jog-JD-SuM" secondAttribute="top" id="mAu-5o-x54"/>
+                            <constraint firstItem="oQM-iI-qU0" firstAttribute="top" secondItem="vRI-TI-cTi" secondAttribute="bottom" constant="21" id="mgw-lJ-0Vs"/>
                             <constraint firstItem="hys-sR-Hmm" firstAttribute="leading" secondItem="jog-JD-SuM" secondAttribute="leading" id="pAw-SS-9h3"/>
                             <constraint firstItem="xsU-Um-HT6" firstAttribute="leading" secondItem="H1z-CS-QB1" secondAttribute="leading" constant="95" id="qyu-1x-e1I"/>
                             <constraint firstAttribute="trailing" secondItem="hys-sR-Hmm" secondAttribute="trailing" id="tCr-gu-m20"/>
@@ -202,15 +218,15 @@
             <objects>
                 <tableViewController id="rmt-Ds-zau" customClass="PlayerListTableViewController" customModule="BlindTestIos" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Kqn-wR-8st">
-                        <rect key="frame" x="0.0" y="0.0" width="361" height="141"/>
+                        <rect key="frame" x="0.0" y="0.0" width="245" height="243"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="0.11051324503311258" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="aRd-l0-UgS">
-                                <rect key="frame" x="0.0" y="50" width="361" height="43.666667938232422"/>
+                                <rect key="frame" x="0.0" y="50" width="245" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aRd-l0-UgS" id="sg4-GF-0dV">
-                                    <rect key="frame" x="0.0" y="0.0" width="361" height="43.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="245" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1016,7 +1032,7 @@ L'équipe ou le joueur avec le plus grand nombre de points à la fin du jeu est 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="KCw-IL-f0i"/>
+        <segue reference="616-XA-GoV"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="appName" width="971" height="181"/>

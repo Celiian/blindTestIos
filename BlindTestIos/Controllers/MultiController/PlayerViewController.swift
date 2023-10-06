@@ -46,6 +46,13 @@ class PlayerViewController: UIViewController {
         self.embedController!.setData(data: playerData)
         self.playerNameTextField.text = ""
     }
+    
+    @IBAction func emptyPlayer(_ sender: Any) {
+        playerData.remove(at: playerData.count - 1)
+        self.embedController!.setData(data: playerData)
+        self.playerNameTextField.text = ""
+    }
+    
     /*
     // MARK: - Navigation
 
