@@ -98,6 +98,7 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
         if difficulty == "Simple"{
             if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiGame") as? MultiGameViewController {
                 VC.artist = yourDataArray[indexPath.row] as? [String : Any]
+                VC.difficulty = self.difficulty
                 self.navigationController?.pushViewController(VC, animated: true)
             }
         }
@@ -200,11 +201,11 @@ class MultiCategoryViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     @IBAction func play(_ sender: Any) {
-        print("???")
         print(artistChoosen)
         if artistChoosen.count > 0{
             if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiGame") as? MultiGameViewController {
                 VC.artistChoosen = self.artistChoosen
+                VC.difficulty = self.difficulty
                 self.navigationController?.pushViewController(VC, animated: true)
             }
         }

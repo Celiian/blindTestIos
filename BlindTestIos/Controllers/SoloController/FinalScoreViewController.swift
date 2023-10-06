@@ -25,7 +25,6 @@ class FinalScoreViewController: UIViewController {
         
         if(self.simple == 0){
             self.scoreDisplay.text = "\(self.score)  /  \(self.total * 2)"
-            self.SongsFound.isHidden = true
             self.artistesFound.isHidden = true
             self.SongsFound.text = "Chansons trouvés : \(self.score / 2)"
 
@@ -33,7 +32,7 @@ class FinalScoreViewController: UIViewController {
         else {
             self.scoreDisplay.text = "\(self.score)  /  \(self.total * 4)"
             self.SongsFound.text = "Chansons trouvés : \((self.score - self.artistPoints) / 2)"
-            self.artistesFound.text = "Artistes trouvés : \(self.artistPoints)"
+            self.artistesFound.text = "Artistes trouvés : \(self.artistPoints / 2)"
             
         }
 

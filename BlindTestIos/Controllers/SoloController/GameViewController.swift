@@ -14,6 +14,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     var artist: [String: Any]?
     var artistChoosen = [AnyObject]()
+    var lives = 3
     
     var previews_url: [[String: String]] = []
     var audioPlayer: AVAudioPlayer?
@@ -25,6 +26,7 @@ class GameViewController: UIViewController {
     
     var player: AVPlayer?
     var videoPlayer: AVPlayer?
+    var difficulty : String = ""
     
     var video_url: URL? = URL(string: "")
     
@@ -32,13 +34,14 @@ class GameViewController: UIViewController {
     @IBOutlet weak var titleInput: UITextField!
     @IBOutlet weak var artistInput: UITextField!
     @IBOutlet weak var labels_points: UILabel!
+    @IBOutlet weak var label_lives: UILabel!
     
     var index: Int = 0
     var action: String = "Commencer"
     
     var totalPoints: Int = 0
     var artistPoints: Int = 0
-
+    
     
     override func viewDidLoad() {
         
@@ -51,19 +54,30 @@ class GameViewController: UIViewController {
         self.artistInput.isHidden = true
         self.video_view.isHidden = true
         self.playButton.titleLabel?.text = "Commencer"
-        if(artistChoosen.isEmpty){
+        
+        self.spinner.startAnimating()
+        self.spinner.isHidden = false
+        
+        if(difficulty == "Simple"){
             getSongsSimple()
         }
         else {
             getSongs()
-            
+        }
+        
+        if difficulty != "Difficile"{
+            self.label_lives.isHidden = true
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.player?.pause()
+        self.player = nil
+        
+        self.videoPlayer?.pause()
+        self.videoPlayer = nil
     }
-    
+
     
     
     func getSongsSimple () {
@@ -133,6 +147,8 @@ class GameViewController: UIViewController {
     }
     
     func getTracks(artistIds: [String], genres: [String]) {
+        self.spinner.startAnimating()
+        self.spinner.isHidden = false
         getSpotify(type: "recommendations?limit=50&seed_artists=", parameter: artistIds.joined(separator: "%2C"), parameterType: "&min_popularity=50") { result in
             if let result = result {
                 if let data = result.data(using: .utf8) {
@@ -247,7 +263,7 @@ class GameViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                     self.titleInput.isHidden = false
-                    if(!self.artistChoosen.isEmpty){
+                    if(self.difficulty != "Simple"){
                         self.artistInput.isHidden = false
                     }
                     
@@ -529,6 +545,9 @@ class GameViewController: UIViewController {
     
     @IBAction func clickToCOntinue(_ sender: Any) {
         if(self.action == "Suivant" || self.action == "Commencer"){
+            self.spinner.startAnimating()
+            self.spinner.isHidden = false
+            
             self.video_view.isHidden = true
             self.music_name.isHidden = true
             self.videoPlayer?.pause()
@@ -537,10 +556,9 @@ class GameViewController: UIViewController {
             self.player?.pause()
             
             self.titleInput.text = ""
-            if(!artistChoosen.isEmpty){
-                self.artistInput.text = ""
-                self.artistInput.isHidden = true
-            }
+            self.artistInput.text = ""
+            self.artistInput.isHidden = true
+            
             self.titleInput.isHidden = true
             
             self.playButton.isHidden = true
@@ -548,11 +566,18 @@ class GameViewController: UIViewController {
             self.action = "Valider"
         }
         else if self.action == "Valider" {
-            if(!artistChoosen.isEmpty){
+            self.spinner.startAnimating()
+            self.spinner.isHidden = false
+            
+            var found = false
+            
+            if(self.difficulty != "Simple"){
                 if let userInput = self.artistInput.text?.uppercased(),
                    let textToGuess = self.music_name.text?.split(separator: "-")[1].uppercased() {
                     let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
-                    
+                    if points > 0 {
+                        found = true
+                    }
                     self.totalPoints += Int(points)
                     self.artistPoints += Int(points)
                 }
@@ -560,7 +585,9 @@ class GameViewController: UIViewController {
             if let userInput = self.titleInput.text?.uppercased(),
                let textToGuess = self.music_name.text?.split(separator: "-")[0].uppercased() {
                 let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
-                
+                if points > 0 {
+                    found = true
+                }
                 self.displayVideo()
                 DispatchQueue.main.async {
                     self.music_name.isHidden = false
@@ -576,21 +603,39 @@ class GameViewController: UIViewController {
                         self.playButton.setTitle("Suivant", for: .normal)
                         self.action = "Suivant"
                     }
-                    
+                }
+                if !found {
+                    self.lives -= 1
+                    self.label_lives.text = "Vies : \(lives)"
+                }
+                
+                if(self.difficulty == "Difficile"){
+                    if(self.lives == 0){
+                        DispatchQueue.main.async {
+                            self.action = "Score"
+                            self.playButton.setTitle("Score", for: .normal)
+                            self.playButton.isHidden = false
+                        }
+                        
+                        let alertController = UIAlertController(title: "Perdu", message: "Vous êtes à court de vie, le blind test s'arrete.", preferredStyle: .alert)
+                        
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(okAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                    }
                 }
             }
         }
         else if self.action == "Score" {
-            if(self.previews_url.count == self.index){
                 if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "scoreBoard") as? FinalScoreViewController {
                     VC.score = self.totalPoints
                     VC.artistPoints = self.artistPoints
                     VC.total = self.previews_url.count
                     VC.simple = self.artistChoosen.count
                     self.navigationController?.pushViewController(VC, animated: true)
-                }
-            }
-            
+                }            
         }
     }
     
@@ -624,8 +669,10 @@ class GameViewController: UIViewController {
             self.videoPlayer?.play()
             self.albumCover.isHidden = true
             
-            
             self.video_view.isHidden = false
+            
+            self.spinner.stopAnimating()
+            self.spinner.isHidden = true
             
         }
         

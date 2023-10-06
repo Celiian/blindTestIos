@@ -21,6 +21,7 @@ class MultiGameViewController: UIViewController {
     var videoPlayer: AVPlayer?
     
     var video_url: URL? = URL(string: "")
+    var difficulty : String = ""
     
     @IBOutlet weak var video_view: UIView!
     
@@ -37,13 +38,14 @@ class MultiGameViewController: UIViewController {
         self.playButton.isHidden = true
         self.video_view.isHidden = true
         self.playButton.titleLabel?.text = "Commencer"
-        if(self.artistChoosen.isEmpty){
+        if(self.difficulty == "Simple"){
             getSongsSimple()
         }
         else {
             getSongs()
             
-        }    }
+        }
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.player?.pause()
@@ -169,8 +171,16 @@ class MultiGameViewController: UIViewController {
     
     func playSound() {
         self.albumCover.isHidden = false
+
+        var audioDuration = 0.0
         
-        let audioDuration = 10.0
+        if self.difficulty == "Difficile"{
+            audioDuration = 5.0
+        }
+        else {
+            audioDuration = 10.0
+        }
+        
         self.playButton.isHidden = true
         
         self.spinner.isHidden = false
@@ -201,9 +211,15 @@ class MultiGameViewController: UIViewController {
                 self.playSoundFromUrl(audioURL: audioURL, audioDuration : audioDuration, skip: true)
             case .failure(let error):
                 print("Failed with error: \(error)")
-                
                 self.index += 1
-                self.playSound()
+                
+                if  (self.index == self.previews_url.count){
+                    self.playButton.setTitle("Scores", for: .normal)
+                    self.action = "score"
+                }
+                else {
+                    self.playSound()
+                }   
             }
         }
     }
@@ -403,7 +419,7 @@ class MultiGameViewController: UIViewController {
             self.action = "Suivant"
             self.playButton.setTitle("Suivant", for: .normal)
             self.displayVideo()
-
+            
         }
     }
     

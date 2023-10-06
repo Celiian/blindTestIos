@@ -32,6 +32,13 @@ class MultiDifficultyViewController: UIViewController {
             self.navigationController?.pushViewController(VC, animated: true)
         }
     }
+    
+    @IBAction func hardClick(_ sender: Any) {
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiCategory") as? MultiCategoryViewController{
+            VC.difficulty = (sender as! UIButton).titleLabel!.text!
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
     /*
     // MARK: - Navigation
 

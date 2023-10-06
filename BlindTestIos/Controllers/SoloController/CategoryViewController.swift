@@ -44,7 +44,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         self.artistTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         self.artistTableView.backgroundColor = UIColor.clear
-
+        
         self.searchBar.searchBarStyle = .minimal
         self.searchBar.searchTextField.backgroundColor = .white
         
@@ -104,9 +104,9 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         else {
             cell.backgroundColor = UIColor.clear
             cell.textLabel?.textColor = UIColor(red: 1.0, green: 0.533, blue: 0.874, alpha: 1.0)
-
+            
         }
-        
+      
         return cell
     }
     
@@ -117,6 +117,7 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         if difficulty == "Simple"{
             if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController {
                 VC.artist = yourDataArray[indexPath.row] as? [String : Any]
+                VC.difficulty = self.difficulty
                 self.navigationController?.pushViewController(VC, animated: true)
             }
         }
@@ -152,9 +153,9 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
-        }
-        DispatchQueue.main.async {
-            self.artistTableView.reloadData()
+            DispatchQueue.main.async {
+                self.artistTableView.reloadData()
+            }
         }
     }
     
@@ -226,13 +227,22 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func play(_ sender: Any) {
-        if artistChoosen.count > 0{
-            if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController {
-                VC.artistChoosen = self.artistChoosen
-                self.navigationController?.pushViewController(VC, animated: true)
+        if self.artistChoosen.count > 0{
+            if self.difficulty == "Difficile"{
+                if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController {
+                    VC.artistChoosen = self.artistChoosen
+                    VC.difficulty = self.difficulty
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
+            }
+            else if self.difficulty == "Moyen"{
+                if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "game") as? GameViewController {
+                    VC.artistChoosen = self.artistChoosen
+                    VC.difficulty = self.difficulty
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
             }
         }
     }
-    
     
 }
