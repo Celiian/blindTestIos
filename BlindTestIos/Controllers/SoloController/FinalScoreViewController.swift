@@ -9,10 +9,35 @@ import UIKit
 
 class FinalScoreViewController: UIViewController {
 
+    
+    var score : Int = 0
+    var artistPoints : Int = 0
+    var total : Int = 0
+    var simple : Int = 0
+    @IBOutlet weak var scoreDisplay: UILabel!
+    
+    @IBOutlet weak var chansons: UILabel!
+    @IBOutlet weak var SongsFound: UILabel!
+    @IBOutlet weak var artistesFound: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if(self.simple == 0){
+            self.scoreDisplay.text = "\(self.score)  /  \(self.total * 2)"
+            self.SongsFound.isHidden = true
+            self.artistesFound.isHidden = true
+            self.SongsFound.text = "Chansons trouvés : \(self.score / 2)"
 
-        // Do any additional setup after loading the view.
+        }
+        else {
+            self.scoreDisplay.text = "\(self.score)  /  \(self.total * 4)"
+            self.SongsFound.text = "Chansons trouvés : \((self.score - self.artistPoints) / 2)"
+            self.artistesFound.text = "Artistes trouvés : \(self.artistPoints)"
+            
+        }
+
+        self.chansons.text = "Chansons : \(self.total)"
     }
     
 

@@ -9,9 +9,6 @@ import UIKit
 
 class MultiDifficultyViewController: UIViewController {
 
-    @IBOutlet weak var hardButton: UIButton!
-    @IBOutlet weak var midButton: UIButton!
-    @IBOutlet weak var easyButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,7 +19,14 @@ class MultiDifficultyViewController: UIViewController {
     
 
     @IBAction func navClick(_ sender: Any) {
-
+        if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiCategory") as? MultiCategoryViewController{
+            VC.difficulty = (sender as! UIButton).titleLabel!.text!
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
+    
+    
+    @IBAction func mediumClick(_ sender: Any) {
         if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "multiCategory") as? MultiCategoryViewController{
             VC.difficulty = (sender as! UIButton).titleLabel!.text!
             self.navigationController?.pushViewController(VC, animated: true)

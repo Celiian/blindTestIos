@@ -41,9 +41,14 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
     var artistChoosen = [AnyObject]()
     
     override func viewDidLoad() {
-        print(self.difficulty)
         super.viewDidLoad()
         self.artistTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.artistTableView.backgroundColor = UIColor.clear
+
+        self.searchBar.searchBarStyle = .minimal
+        self.searchBar.searchTextField.backgroundColor = .white
+        
+        
         self.artistTableView.delegate = self
         self.artistTableView.dataSource = self
         self.searchBar.delegate = self
@@ -51,7 +56,6 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         if(difficulty == "Simple"){
             self.continueButton.isHidden = true
         }
-        // Do any additional setup after loading the view.
     }
     
     // MARK: - Table View Data Source
@@ -95,11 +99,12 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         if(isContained){
-            cell.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         }
         else {
-            cell.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
-            
+            cell.backgroundColor = UIColor.clear
+            cell.textLabel?.textColor = UIColor(red: 1.0, green: 0.533, blue: 0.874, alpha: 1.0)
+
         }
         
         return cell
@@ -148,7 +153,9 @@ class CategoryViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
-        
+        DispatchQueue.main.async {
+            self.artistTableView.reloadData()
+        }
     }
     
     //MARK: - Navigation button

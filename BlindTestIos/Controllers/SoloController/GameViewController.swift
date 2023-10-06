@@ -31,17 +31,14 @@ class GameViewController: UIViewController {
     @IBOutlet weak var video_view: UIView!
     @IBOutlet weak var titleInput: UITextField!
     @IBOutlet weak var artistInput: UITextField!
-    
     @IBOutlet weak var labels_points: UILabel!
-    
-    var isVideoReady = false // Global boolean to indicate video readiness
     
     var index: Int = 0
     var action: String = "Commencer"
     
     var totalPoints: Int = 0
-    
-    var album_url : String = ""
+    var artistPoints: Int = 0
+
     
     override func viewDidLoad() {
         
@@ -136,7 +133,7 @@ class GameViewController: UIViewController {
     }
     
     func getTracks(artistIds: [String], genres: [String]) {
-        getSpotify(type: "recommendations?limit=50&seed_artists=", parameter: artistIds.joined(separator: "%2C"), parameterType: "") { result in
+        getSpotify(type: "recommendations?limit=50&seed_artists=", parameter: artistIds.joined(separator: "%2C"), parameterType: "&min_popularity=50") { result in
             if let result = result {
                 if let data = result.data(using: .utf8) {
                     do {
@@ -157,7 +154,7 @@ class GameViewController: UIViewController {
                             
                             
                             self.previews_url = previewDictionary
-
+                            
                             DispatchQueue.main.async {
                                 self.playButton.isHidden = false
                                 self.spinner.stopAnimating()
@@ -176,29 +173,6 @@ class GameViewController: UIViewController {
     
     
     
-    func getArtistBestSong(artistId: String, completion: @escaping ([String: Any]?) -> Void) {
-        getSpotify(type: "artists", parameter: artistId, parameterType: "/top-tracks?market=Fr") { result in
-            if let result = result {
-                if let data = result.data(using: .utf8) {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                           let tracks = json["tracks"] as? [[String: Any]] {
-                            
-                            for track in tracks {
-                                completion(track)
-                                return
-                            }
-                        }
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-            } else {
-                print("Error or nil result")
-            }
-        }
-    }
-    
     func playSound() {
         self.albumCover.isHidden = false
         
@@ -209,7 +183,7 @@ class GameViewController: UIViewController {
         self.spinner.startAnimating()
         let songName = self.previews_url[self.index]["name"]
         let artistName = self.previews_url[self.index]["artist"]
-
+        
         let search = (songName?.contains("feat") ?? true) ? songName! : "\(songName ?? "") \(artistName ?? "")"
         
         
@@ -238,12 +212,6 @@ class GameViewController: UIViewController {
                 self.playSound()
             }
         }
-        
-        
-        
-        
-        
-        
     }
     
     
@@ -279,6 +247,9 @@ class GameViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                     self.titleInput.isHidden = false
+                    if(!self.artistChoosen.isEmpty){
+                        self.artistInput.isHidden = false
+                    }
                     
                     self.music_name.text = songName + " - " + artistName
                     
@@ -331,9 +302,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    @objc func stopSound() {
-        player?.pause()
-    }
+    
     
     
     func getAudioFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -568,15 +537,28 @@ class GameViewController: UIViewController {
             self.player?.pause()
             
             self.titleInput.text = ""
+            if(!artistChoosen.isEmpty){
+                self.artistInput.text = ""
+                self.artistInput.isHidden = true
+            }
             self.titleInput.isHidden = true
             
             self.playButton.isHidden = true
             self.playSound()
             self.action = "Valider"
         }
-        else {
+        else if self.action == "Valider" {
+            if(!artistChoosen.isEmpty){
+                if let userInput = self.artistInput.text?.uppercased(),
+                   let textToGuess = self.music_name.text?.split(separator: "-")[1].uppercased() {
+                    let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
+                    
+                    self.totalPoints += Int(points)
+                    self.artistPoints += Int(points)
+                }
+            }
             if let userInput = self.titleInput.text?.uppercased(),
-               let textToGuess = self.music_name.text?.uppercased() {
+               let textToGuess = self.music_name.text?.split(separator: "-")[0].uppercased() {
                 let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
                 
                 self.displayVideo()
@@ -584,9 +566,28 @@ class GameViewController: UIViewController {
                     self.music_name.isHidden = false
                     self.totalPoints += Int(points)
                     self.labels_points.text = "Points : \(self.totalPoints)"
-                    self.playButton.setTitle("Suivant", for: .normal)
-                    self.action = "Suivant"
                     
+                    if self.previews_url.count == self.index
+                    {
+                        self.playButton.setTitle("Score", for: .normal)
+                        self.action = "Score"
+                    }
+                    else {
+                        self.playButton.setTitle("Suivant", for: .normal)
+                        self.action = "Suivant"
+                    }
+                    
+                }
+            }
+        }
+        else if self.action == "Score" {
+            if(self.previews_url.count == self.index){
+                if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "scoreBoard") as? FinalScoreViewController {
+                    VC.score = self.totalPoints
+                    VC.artistPoints = self.artistPoints
+                    VC.total = self.previews_url.count
+                    VC.simple = self.artistChoosen.count
+                    self.navigationController?.pushViewController(VC, animated: true)
                 }
             }
             

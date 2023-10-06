@@ -4,12 +4,15 @@ import YouTubeKit
 
 class MultiGameViewController: UIViewController {
     
+    @IBOutlet weak var playerListUIView: UIView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     var artist: [String: Any]?
+    var artistChoosen = [AnyObject]()
+    
     var previews_url: [[String: String]] = []
     var audioPlayer: AVAudioPlayer?
     @IBOutlet weak var music_name: UILabel!
-    @IBOutlet weak var playerListUIView: UIView!
+    
     @IBOutlet weak var trackNumber: UILabel!
     @IBOutlet weak var albumCover: UIImageView!
     @IBOutlet weak var playButton: UIButton!
@@ -21,16 +24,10 @@ class MultiGameViewController: UIViewController {
     
     @IBOutlet weak var video_view: UIView!
     
-    
-    
-    var isVideoReady = false // Global boolean to indicate video readiness
-    
     var index: Int = 0
+    var action: String = "Commencer"
     
     
-    var totalPoints: Int = 0
-    
-    var album_url : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +36,14 @@ class MultiGameViewController: UIViewController {
         self.trackNumber.isHidden = true
         self.playButton.isHidden = true
         self.video_view.isHidden = true
-        self.albumCover.image = UIImage(named: "image")
         self.playButton.titleLabel?.text = "Commencer"
-        getSongs()
-    }
+        if(self.artistChoosen.isEmpty){
+            getSongsSimple()
+        }
+        else {
+            getSongs()
+            
+        }    }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.player?.pause()
@@ -50,7 +51,7 @@ class MultiGameViewController: UIViewController {
     
     
     
-    func getSongs () {
+    func getSongsSimple () {
         let artistId = artist!["id"] as? String
         spinner.startAnimating()
         self.previews_url = []
@@ -64,21 +65,11 @@ class MultiGameViewController: UIViewController {
                             
                             
                             var previewDictionary = tracks.compactMap { track in
-                                if let previewURL = track["preview_url"] as? String,
-                                   let name = track["name"] as? String,
-                                   let albumImage = track["album"] as? [String: Any],
-                                   let albumImages = albumImage["images"] as? [[String: Any]],
-                                   let coverURL = albumImages.first?["url"] as? String {
-                                    return ["url": previewURL, "name": name, "coverURL": coverURL]
-                                }
-                                else {
-                                    if  let name = track["name"] as? String,
-                                        let albumImage = track["album"] as? [String: Any],
-                                        let albumImages = albumImage["images"] as? [[String: Any]],
-                                        let coverURL = albumImages.first?["url"] as? String {
-                                        
-                                        return ["url": "no_url", "name": name, "coverURL": coverURL]
-                                    }
+                                if  let name = track["name"] as? String,
+                                    let artists = track["artists"] as? [[String: AnyObject]],
+                                    let artistName = artists.first?["name"] as? String{
+                                    
+                                    return ["name": name, "artist" : artistName]
                                 }
                                 return nil
                             }
@@ -105,21 +96,97 @@ class MultiGameViewController: UIViewController {
         
     }
     
+    
+    func getSongs () {
+        
+        if let artistChoosen = self.artistChoosen as? [[String: Any]] {
+            let artistsIds = self.artistChoosen.compactMap { $0["id"] as? String }
+            let genres = artistChoosen.compactMap { dictionary in
+                if let genresArray = dictionary["genres"] as? [String], let firstGenre = genresArray.first {
+                    return firstGenre
+                }
+                return nil
+            }
+            spinner.startAnimating()
+            self.previews_url = []
+            
+            
+            self.getTracks(artistIds: artistsIds, genres: genres)
+        } else {
+            // Handle the case where 'self.artistChoosen' is not of the expected type.
+        }
+    }
+    
+    func getTracks(artistIds: [String], genres: [String]) {
+        getSpotify(type: "recommendations?limit=50&seed_artists=", parameter: artistIds.joined(separator: "%2C"), parameterType: "&min_popularity=50") { result in
+            if let result = result {
+                if let data = result.data(using: .utf8) {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let tracks = json["tracks"] as? [[String: Any]] {
+                            
+                            var previewDictionary = tracks.compactMap { track in
+                                if  let name = track["name"] as? String,
+                                    let artists = track["artists"] as? [[String: AnyObject]],
+                                    let artistName = artists.first?["name"] as? String{
+                                    
+                                    return ["name": name, "artist" : artistName]
+                                }
+                                return nil
+                            }
+                            
+                            previewDictionary.shuffle()
+                            
+                            
+                            self.previews_url = previewDictionary
+                            
+                            DispatchQueue.main.async {
+                                self.playButton.isHidden = false
+                                self.spinner.stopAnimating()
+                                self.spinner.isHidden = true
+                            }
+                        }
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } else {
+                print("Error or nil result")
+            }
+        }
+    }
+    
+    func preloadVideo(videoUrl : URL) {
+        let playerItem = AVPlayerItem(url: videoUrl)
+        self.videoPlayer = AVPlayer(playerItem: playerItem)
+        
+        let playerLayer = AVPlayerLayer(player: self.videoPlayer)
+        playerLayer.frame = self.video_view.bounds
+        self.video_view.layer.addSublayer(playerLayer)
+    }
+    
+    
+    
     func playSound() {
+        self.albumCover.isHidden = false
+        
         let audioDuration = 10.0
         self.playButton.isHidden = true
-        self.albumCover.isHidden = false
+        
         self.spinner.isHidden = false
         self.spinner.startAnimating()
         let songName = self.previews_url[self.index]["name"]
+        let artistName = self.previews_url[self.index]["artist"]
         
-        let search = (songName?.contains("feat") ?? true) ? songName : "\(songName ?? "") \(artist!["name"] ?? "")"
+        let search = (songName?.contains("feat") ?? true) ? songName! : "\(songName ?? "") \(artistName ?? "")"
         
-        self.getAudioFromYt(songName: search!) { videoURLString in
+        
+        
+        self.getAudioFromYt(songName: search) { videoURLString in
             switch videoURLString {
             case .success(let url):
                 let audioURL = url
-                self.getVideoFromYt(songName: search!) { videoURLString in
+                self.getVideoFromYt(songName: search) { videoURLString in
                     switch videoURLString {
                     case .success(let url):
                         self.video_url = url
@@ -139,17 +206,15 @@ class MultiGameViewController: UIViewController {
                 self.playSound()
             }
         }
-        
     }
     
     
     func playSoundFromUrl(audioURL : URL, audioDuration : Double, skip : Bool) {
         if let songName = self.previews_url[self.index]["name"],
-           let coverUrl = self.previews_url[self.index]["coverURL"]{
+           let artistName = self.previews_url[self.index]["artist"]{
             self.player = AVPlayer(url: audioURL)
             
             
-            self.album_url = coverUrl
             
             self.trackNumber.text = "\(index + 1) / \(self.previews_url.count )"
             self.trackNumber.isHidden = false
@@ -175,20 +240,16 @@ class MultiGameViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     
-                    self.displayVideo()
-                    DispatchQueue.main.async {
-                        self.music_name.text = songName
-                        self.music_name.isHidden = false
-                        self.playButton.setTitle("Suivant", for: .normal)
-                        self.playButton.isHidden = false
-                        
+                    
+                    self.music_name.text = songName + " - " + artistName
+                    
+                    if  (self.index == self.previews_url.count){
+                        self.playButton.setTitle("Scores", for: .normal)
+                        self.action = "score"
                     }
                 }
-                
+                self.playButton.isHidden = false
             }
-            
-            
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                 self.player?.pause()
             }
@@ -196,24 +257,22 @@ class MultiGameViewController: UIViewController {
         }
     }
     
+    
     @objc func animateAndDisappearContainer(duration: TimeInterval, disappearanceDuration: TimeInterval, completionHandler: @escaping () -> Void) {
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
-        let containerWidth: CGFloat = screenWidth * 0.8
-        let containerHeight: CGFloat = screenHeight * 0.05
+        let containerWidth: CGFloat = screenWidth * 0.65
+        let containerHeight: CGFloat = screenHeight * 0.01
         let containerX = (screenWidth - containerWidth) / 2
         let containerY = screenHeight * 0.75 - containerHeight / 2
         
         let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
-        containerView.backgroundColor = UIColor.white
-        containerView.layer.cornerRadius = containerHeight / 2
-        containerView.layer.borderWidth = 1.0
-        containerView.layer.borderColor = UIColor.black.cgColor
         
         let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
-        fillView.backgroundColor = UIColor.green
+        fillView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.99, alpha: 1.0)
         fillView.layer.cornerRadius = containerHeight / 2
         containerView.addSubview(fillView)
+        
         
         self.view.addSubview(containerView)
         
@@ -236,9 +295,6 @@ class MultiGameViewController: UIViewController {
         }
     }
     
-    @objc func stopSound() {
-        player?.pause()
-    }
     
     
     func getAudioFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -320,30 +376,37 @@ class MultiGameViewController: UIViewController {
     
     
     @IBAction func clickToCOntinue(_ sender: Any) {
-        self.video_view.isHidden = true
-        self.music_name.isHidden = true
-        self.videoPlayer?.pause()
-        self.videoPlayer?.replaceCurrentItem(with: nil)
-        self.videoPlayer?.seek(to: .zero)
-        self.player?.pause()
-        
-        self.albumCover.image = UIImage(named: "image")
-        
-        self.playButton.isHidden = true
-        self.playSound()
+        if self.action == "score" {
+            if(self.previews_url.count == self.index){
+                if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "scoreBoard") as? FinalScoreViewController {
+                    VC.total = self.previews_url.count
+                    VC.simple = self.artistChoosen.count
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }
+            }
+        }
+        else if(self.action == "Suivant" || self.action == "Commencer"){
+            self.video_view.isHidden = true
+            self.music_name.isHidden = true
+            self.videoPlayer?.pause()
+            self.videoPlayer?.replaceCurrentItem(with: nil)
+            self.videoPlayer?.seek(to: .zero)
+            self.player?.pause()
+            
+            self.playButton.isHidden = true
+            self.action = "Réponse"
+            self.playButton.setTitle("Réponse", for: .normal)
+            self.playSound()
+        }
+        else if self.action == "Réponse" {
+            self.music_name.isHidden = false
+            self.action = "Suivant"
+            self.playButton.setTitle("Suivant", for: .normal)
+            self.displayVideo()
+
+        }
     }
     
-    
-    func preloadVideo(videoUrl : URL) {
-        let playerItem = AVPlayerItem(url: videoUrl)
-        self.videoPlayer = AVPlayer(playerItem: playerItem)
-        
-        let playerLayer = AVPlayerLayer(player: self.videoPlayer)
-        playerLayer.frame = self.video_view.bounds
-        self.video_view.layer.addSublayer(playerLayer)
-    }
-    
-    // Global function to display the video
     func displayVideo() {
         
         
@@ -362,9 +425,12 @@ class MultiGameViewController: UIViewController {
             self.player?.play()
             self.videoPlayer?.play()
             self.albumCover.isHidden = true
+            
+            
             self.video_view.isHidden = false
             
         }
-        
     }
 }
+
+

@@ -16,6 +16,8 @@ class PlayerListTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.playerTableView.backgroundColor = UIColor.clear
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -49,7 +51,10 @@ class PlayerListTableViewController: UITableViewController {
         } else {
             cell.textLabel?.text = "Unknown"
         }
-       
+        cell.backgroundColor = UIColor.clear
+        cell.textLabel?.textColor = UIColor(red: 1.0, green: 0.533, blue: 0.874, alpha: 1.0)
+        cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.45)
+
         return cell
     }
     
