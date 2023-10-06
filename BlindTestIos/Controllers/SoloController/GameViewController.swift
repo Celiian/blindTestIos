@@ -13,6 +13,9 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     var artist: [String: Any]?
+    var artistChoosen = [AnyObject]()
+    var lives = 3
+    
     var previews_url: [[String: String]] = []
     var audioPlayer: AVAudioPlayer?
     @IBOutlet weak var music_name: UILabel!
@@ -23,25 +26,25 @@ class GameViewController: UIViewController {
     
     var player: AVPlayer?
     var videoPlayer: AVPlayer?
+    var difficulty : String = ""
     
     var video_url: URL? = URL(string: "")
     
     @IBOutlet weak var video_view: UIView!
     @IBOutlet weak var titleInput: UITextField!
     @IBOutlet weak var artistInput: UITextField!
-    
     @IBOutlet weak var labels_points: UILabel!
-    
-    var isVideoReady = false // Global boolean to indicate video readiness
+    @IBOutlet weak var label_lives: UILabel!
     
     var index: Int = 0
     var action: String = "Commencer"
     
     var totalPoints: Int = 0
+    var artistPoints: Int = 0
     
-    var album_url : String = ""
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.labels_points.text = "Points : \(totalPoints)"
         self.music_name.isHidden = true
@@ -50,18 +53,34 @@ class GameViewController: UIViewController {
         self.titleInput.isHidden = true
         self.artistInput.isHidden = true
         self.video_view.isHidden = true
-        self.albumCover.image = UIImage(named: "image")
         self.playButton.titleLabel?.text = "Commencer"
-        getSongs()
+        
+        self.spinner.startAnimating()
+        self.spinner.isHidden = false
+        
+        if(difficulty == "Simple"){
+            getSongsSimple()
+        }
+        else {
+            getSongs()
+        }
+        
+        if difficulty != "Difficile"{
+            self.label_lives.isHidden = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.player?.pause()
+        self.player = nil
+        
+        self.videoPlayer?.pause()
+        self.videoPlayer = nil
     }
 
     
     
-    func getSongs () {
+    func getSongsSimple () {
         let artistId = artist!["id"] as? String
         spinner.startAnimating()
         self.previews_url = []
@@ -73,29 +92,19 @@ class GameViewController: UIViewController {
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                            let tracks = json["tracks"] as? [[String: Any]] {
                             
-
+                            
                             var previewDictionary = tracks.compactMap { track in
-                                if let previewURL = track["preview_url"] as? String,
-                                   let name = track["name"] as? String,
-                                   let albumImage = track["album"] as? [String: Any],
-                                   let albumImages = albumImage["images"] as? [[String: Any]],
-                                   let coverURL = albumImages.first?["url"] as? String {
-                                    return ["url": previewURL, "name": name, "coverURL": coverURL]
-                                }
-                                else {
-                                    if  let name = track["name"] as? String,
-                                        let albumImage = track["album"] as? [String: Any],
-                                        let albumImages = albumImage["images"] as? [[String: Any]],
-                                        let coverURL = albumImages.first?["url"] as? String {
-
-                                        return ["url": "no_url", "name": name, "coverURL": coverURL]
-                                    }
+                                if  let name = track["name"] as? String,
+                                    let artists = track["artists"] as? [[String: AnyObject]],
+                                    let artistName = artists.first?["name"] as? String{
+                                    
+                                    return ["name": name, "artist" : artistName]
                                 }
                                 return nil
                             }
-                           
+                            
                             previewDictionary.shuffle()
-              
+                            
                             
                             self.previews_url = previewDictionary
                             DispatchQueue.main.async {
@@ -113,26 +122,93 @@ class GameViewController: UIViewController {
                 print("Error or nil result")
             }
         }
-
+        
     }
+    
+    
+    func getSongs () {
+        
+        if let artistChoosen = self.artistChoosen as? [[String: Any]] {
+            let artistsIds = self.artistChoosen.compactMap { $0["id"] as? String }
+            let genres = artistChoosen.compactMap { dictionary in
+                if let genresArray = dictionary["genres"] as? [String], let firstGenre = genresArray.first {
+                    return firstGenre
+                }
+                return nil
+            }
+            spinner.startAnimating()
+            self.previews_url = []
+            
+            
+            self.getTracks(artistIds: artistsIds, genres: genres)
+        } else {
+            // Handle the case where 'self.artistChoosen' is not of the expected type.
+        }
+    }
+    
+    func getTracks(artistIds: [String], genres: [String]) {
+        self.spinner.startAnimating()
+        self.spinner.isHidden = false
+        getSpotify(type: "recommendations?limit=50&seed_artists=", parameter: artistIds.joined(separator: "%2C"), parameterType: "&min_popularity=50") { result in
+            if let result = result {
+                if let data = result.data(using: .utf8) {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let tracks = json["tracks"] as? [[String: Any]] {
+                            
+                            var previewDictionary = tracks.compactMap { track in
+                                if  let name = track["name"] as? String,
+                                    let artists = track["artists"] as? [[String: AnyObject]],
+                                    let artistName = artists.first?["name"] as? String{
+                                    
+                                    return ["name": name, "artist" : artistName]
+                                }
+                                return nil
+                            }
+                            
+                            previewDictionary.shuffle()
+                            
+                            
+                            self.previews_url = previewDictionary
+                            
+                            DispatchQueue.main.async {
+                                self.playButton.isHidden = false
+                                self.spinner.stopAnimating()
+                                self.spinner.isHidden = true
+                            }
+                        }
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } else {
+                print("Error or nil result")
+            }
+        }
+    }
+    
+    
     
     func playSound() {
         self.albumCover.isHidden = false
-
+        
         let audioDuration = 10.0
         self.playButton.isHidden = true
         
         self.spinner.isHidden = false
         self.spinner.startAnimating()
         let songName = self.previews_url[self.index]["name"]
+        let artistName = self.previews_url[self.index]["artist"]
         
-        let search = (songName?.contains("feat") ?? true) ? songName : "\(songName ?? "") \(artist!["name"] ?? "")"
+        let search = (songName?.contains("feat") ?? true) ? songName! : "\(songName ?? "") \(artistName ?? "")"
         
-        self.getAudioFromYt(songName: search!) { videoURLString in
+        
+        
+        self.getAudioFromYt(songName: search) { videoURLString in
             switch videoURLString {
             case .success(let url):
                 let audioURL = url
-                self.getVideoFromYt(songName: search!) { videoURLString in
+                self.getVideoFromYt(songName: search) { videoURLString in
                     switch videoURLString {
                     case .success(let url):
                         self.video_url = url
@@ -152,22 +228,15 @@ class GameViewController: UIViewController {
                 self.playSound()
             }
         }
-        
-        
-        
-        
-
-        
     }
     
     
     func playSoundFromUrl(audioURL : URL, audioDuration : Double, skip : Bool) {
         if let songName = self.previews_url[self.index]["name"],
-           let coverUrl = self.previews_url[self.index]["coverURL"]{
+           let artistName = self.previews_url[self.index]["artist"]{
             self.player = AVPlayer(url: audioURL)
-           
- 
-            self.album_url = coverUrl
+            
+            
             
             self.trackNumber.text = "\(index + 1) / \(self.previews_url.count )"
             self.trackNumber.isHidden = false
@@ -194,17 +263,17 @@ class GameViewController: UIViewController {
                 DispatchQueue.main.async {
                     
                     self.titleInput.isHidden = false
+                    if(self.difficulty != "Simple"){
+                        self.artistInput.isHidden = false
+                    }
                     
-                    self.music_name.text = songName
+                    self.music_name.text = songName + " - " + artistName
                     
                     self.playButton.setTitle("Valider", for: .normal)
                     self.playButton.isHidden = false
                 }
-
+                
             }
-            
-            
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                 self.player?.pause()
             }
@@ -213,45 +282,43 @@ class GameViewController: UIViewController {
     }
     
     @objc func animateAndDisappearContainer(duration: TimeInterval, disappearanceDuration: TimeInterval, completionHandler: @escaping () -> Void) {
-            let screenWidth = UIScreen.main.bounds.size.width
-            let screenHeight = UIScreen.main.bounds.size.height
-            let containerWidth: CGFloat = screenWidth * 0.65
-            let containerHeight: CGFloat = screenHeight * 0.01
-            let containerX = (screenWidth - containerWidth) / 2
-            let containerY = screenHeight * 0.75 - containerHeight / 2
-            
-            let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
-            
-            let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
-            fillView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.99, alpha: 1.0)
-            fillView.layer.cornerRadius = containerHeight / 2
-            containerView.addSubview(fillView)
-
-            
-            self.view.addSubview(containerView)
-            
-            UIView.animate(withDuration: duration, animations: {
-                fillView.frame.size.width = containerView.frame.width
-            }) { (completed) in
-                if completed {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + disappearanceDuration) {
-                        UIView.animate(withDuration: disappearanceDuration, animations: {
-                            containerView.alpha = 0.0
-                        }) { (finished) in
-                            if finished {
-                                containerView.removeFromSuperview()
-                                completionHandler()
-
-                            }
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
+        let containerWidth: CGFloat = screenWidth * 0.65
+        let containerHeight: CGFloat = screenHeight * 0.01
+        let containerX = (screenWidth - containerWidth) / 2
+        let containerY = screenHeight * 0.75 - containerHeight / 2
+        
+        let containerView = UIView(frame: CGRect(x: containerX, y: containerY, width: containerWidth, height: containerHeight))
+        
+        let fillView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: containerHeight))
+        fillView.backgroundColor = UIColor(red: 0.8, green: 0.8, blue: 0.99, alpha: 1.0)
+        fillView.layer.cornerRadius = containerHeight / 2
+        containerView.addSubview(fillView)
+        
+        
+        self.view.addSubview(containerView)
+        
+        UIView.animate(withDuration: duration, animations: {
+            fillView.frame.size.width = containerView.frame.width
+        }) { (completed) in
+            if completed {
+                DispatchQueue.main.asyncAfter(deadline: .now() + disappearanceDuration) {
+                    UIView.animate(withDuration: disappearanceDuration, animations: {
+                        containerView.alpha = 0.0
+                    }) { (finished) in
+                        if finished {
+                            containerView.removeFromSuperview()
+                            completionHandler()
+                            
                         }
                     }
                 }
             }
         }
-    
-    @objc func stopSound() {
-        player?.pause()
     }
+    
+    
     
     
     func getAudioFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
@@ -277,7 +344,7 @@ class GameViewController: UIViewController {
         }
         
     }
-
+    
     
     func getVideoFromYt(songName: String, completion: @escaping (Result<URL, Error>) -> Void) {
         let parser = HTMLParser()
@@ -335,33 +402,33 @@ class GameViewController: UIViewController {
     
     
     
-
+    
     func performWordComparison(userInput: String, textToGuess: String) -> Float {
         
         func removeContentFromParentheses(_ text: String) -> String {
             var result = ""
             var insideParentheses = false
-
+            
             for char in text {
                 if char == "(" {
                     insideParentheses = true
                 } else if char == ")" {
                     insideParentheses = false
                 }
-
+                
                 if !insideParentheses {
                     result.append(char)
                 }
             }
-
+            
             return result
         }
-
+        
         func cleanText(_ text: String) -> String {
             let validCharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ")
             return String(text.unicodeScalars.filter { validCharacterSet.contains($0) })
         }
-
+        
         func romanToArabic(_ romanNumeral: String) -> Int? {
             let romanNumerals: [Character: Int] = [
                 "I": 1,
@@ -372,10 +439,10 @@ class GameViewController: UIViewController {
                 "D": 500,
                 "M": 1000
             ]
-
+            
             var arabicNumeral = 0
             var prevValue = 0
-
+            
             for numeral in romanNumeral.reversed() {
                 if let value = romanNumerals[numeral] {
                     if value < prevValue {
@@ -388,10 +455,10 @@ class GameViewController: UIViewController {
                     return nil
                 }
             }
-
+            
             return arabicNumeral
         }
-
+        
         func convertRomanToArabic(_ text: inout String) {
             let regexPattern = "\\b[IVXLCDM]+\\b"
             let regex = try! NSRegularExpression(pattern: regexPattern, options: .caseInsensitive)
@@ -407,21 +474,21 @@ class GameViewController: UIViewController {
                 }
             }
         }
-
+        
         func removeContentAfterHyphen(_ text: String) -> String {
             if let range = text.range(of: "-") {
                 return String(text.prefix(upTo: range.lowerBound))
             }
             return text
         }
-
+        
         func processText(_ text: inout String) {
             text = removeContentAfterHyphen(text)
             text = cleanText(removeContentFromParentheses(text))
             convertRomanToArabic(&text)
             text = text.trimmingCharacters(in: .whitespaces)
         }
-
+        
         func calculateWordSimilarity(_ word1: String, _ word2: String) -> Double {
             var cleanedWord1 = word1
             var cleanedWord2 = word2
@@ -453,7 +520,7 @@ class GameViewController: UIViewController {
             
             return similarity
         }
-
+        
         // Appel de la fonction calculatePoints ici
         func calculatePoints(userInput: String, textToGuess: String) -> Float {
             let similarity = calculateWordSimilarity(userInput, textToGuess)
@@ -471,13 +538,16 @@ class GameViewController: UIViewController {
                 return 0.0
             }
         }
-
+        
         return calculatePoints(userInput: userInput, textToGuess: textToGuess)
     }
     
     
     @IBAction func clickToCOntinue(_ sender: Any) {
         if(self.action == "Suivant" || self.action == "Commencer"){
+            self.spinner.startAnimating()
+            self.spinner.isHidden = false
+            
             self.video_view.isHidden = true
             self.music_name.isHidden = true
             self.videoPlayer?.pause()
@@ -486,29 +556,86 @@ class GameViewController: UIViewController {
             self.player?.pause()
             
             self.titleInput.text = ""
+            self.artistInput.text = ""
+            self.artistInput.isHidden = true
+            
             self.titleInput.isHidden = true
-            self.albumCover.image = UIImage(named: "image")
             
             self.playButton.isHidden = true
             self.playSound()
             self.action = "Valider"
         }
-        else {
+        else if self.action == "Valider" {
+            self.spinner.startAnimating()
+            self.spinner.isHidden = false
+            
+            var found = false
+            
+            if(self.difficulty != "Simple"){
+                if let userInput = self.artistInput.text?.uppercased(),
+                   let textToGuess = self.music_name.text?.split(separator: "-")[1].uppercased() {
+                    let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
+                    if points > 0 {
+                        found = true
+                    }
+                    self.totalPoints += Int(points)
+                    self.artistPoints += Int(points)
+                }
+            }
             if let userInput = self.titleInput.text?.uppercased(),
-               let textToGuess = self.music_name.text?.uppercased() {
+               let textToGuess = self.music_name.text?.split(separator: "-")[0].uppercased() {
                 let points = self.performWordComparison(userInput: userInput, textToGuess: textToGuess)
-                
+                if points > 0 {
+                    found = true
+                }
                 self.displayVideo()
                 DispatchQueue.main.async {
                     self.music_name.isHidden = false
                     self.totalPoints += Int(points)
                     self.labels_points.text = "Points : \(self.totalPoints)"
-                    self.playButton.setTitle("Suivant", for: .normal)
-                    self.action = "Suivant"
                     
+                    if self.previews_url.count == self.index
+                    {
+                        self.playButton.setTitle("Score", for: .normal)
+                        self.action = "Score"
+                    }
+                    else {
+                        self.playButton.setTitle("Suivant", for: .normal)
+                        self.action = "Suivant"
+                    }
+                }
+                if !found {
+                    self.lives -= 1
+                    self.label_lives.text = "Vies : \(lives)"
+                }
+                
+                if(self.difficulty == "Difficile"){
+                    if(self.lives == 0){
+                        DispatchQueue.main.async {
+                            self.action = "Score"
+                            self.playButton.setTitle("Score", for: .normal)
+                            self.playButton.isHidden = false
+                        }
+                        
+                        let alertController = UIAlertController(title: "Perdu", message: "Vous êtes à court de vie, le blind test s'arrete.", preferredStyle: .alert)
+                        
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(okAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                        
+                    }
                 }
             }
-            
+        }
+        else if self.action == "Score" {
+                if let VC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "scoreBoard") as? FinalScoreViewController {
+                    VC.score = self.totalPoints
+                    VC.artistPoints = self.artistPoints
+                    VC.total = self.previews_url.count
+                    VC.simple = self.artistChoosen.count
+                    self.navigationController?.pushViewController(VC, animated: true)
+                }            
         }
     }
     
@@ -541,9 +668,11 @@ class GameViewController: UIViewController {
             self.player?.play()
             self.videoPlayer?.play()
             self.albumCover.isHidden = true
-
             
             self.video_view.isHidden = false
+            
+            self.spinner.stopAnimating()
+            self.spinner.isHidden = true
             
         }
         
